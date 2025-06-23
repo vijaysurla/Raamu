@@ -93,7 +93,7 @@ export default function RaamuLanding() {
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode)
   }
-  const [showDemo, setShowDemo] = useState(true)
+  const [showDemo, setShowDemo] = useState(false)
   const [conversationText, setConversationText] = useState("")
   const [lastProcessedLength, setLastProcessedLength] = useState(0)
   const [extractedData, setExtractedData] = useState<ExtractedData | null>(null)
@@ -112,7 +112,7 @@ export default function RaamuLanding() {
         recognitionInstance.interimResults = true
         recognitionInstance.lang = "en-US"
 
-        recognitionInstance.onresult = (event: { resultIndex: number; results: { [key: number]: { transcript: string }; isFinal: boolean }[] }) => {
+        recognitionInstance.onresult = (event: any) => {
           let finalTranscript = ""
           let interimTranscript = ""
 
@@ -162,7 +162,7 @@ export default function RaamuLanding() {
           })
         }
 
-        recognitionInstance.onerror = (event: { error: any }) => {
+        recognitionInstance.onerror = (event: any) => {
           console.error("Speech recognition error:", event.error)
           setIsListening(false)
         }
@@ -1108,4 +1108,521 @@ export default function RaamuLanding() {
       </div>
     )
   }
+
+  return (
+    <div
+      className={`min-h-screen transition-colors duration-300 ${
+        isDarkMode
+          ? "bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900"
+          : "bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50"
+      }`}
+    >
+      {/* Navigation */}
+      <nav
+        className={`border-b sticky top-0 z-50 transition-colors duration-300 ${
+          isDarkMode
+            ? "bg-gray-900/80 backdrop-blur-sm border-gray-700"
+            : "bg-white/80 backdrop-blur-sm border-gray-200"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                <Brain className="h-6 w-6 text-white" />
+              </div>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                Raamu
+              </h1>
+            </div>
+            <div className="flex items-center gap-4">
+              <Button
+                onClick={toggleTheme}
+                variant="ghost"
+                className={`transition-colors duration-300 ${
+                  isDarkMode
+                    ? "text-gray-300 hover:text-white hover:bg-gray-800"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                }`}
+              >
+                {isDarkMode ? "☀️ Light" : "🌙 Dark"}
+              </Button>
+              <Button
+                variant="ghost"
+                className={`transition-colors duration-300 ${
+                  isDarkMode
+                    ? "text-gray-300 hover:text-white hover:bg-gray-800"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                }`}
+              >
+                Features
+              </Button>
+              <Button
+                variant="ghost"
+                className={`transition-colors duration-300 ${
+                  isDarkMode
+                    ? "text-gray-300 hover:text-white hover:bg-gray-800"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                }`}
+              >
+                Pricing
+              </Button>
+              <Button
+                variant="outline"
+                className={`transition-colors duration-300 ${
+                  isDarkMode
+                    ? "border-gray-600 text-gray-300 hover:bg-gray-800"
+                    : "border-gray-300 text-gray-700 hover:bg-gray-50"
+                }`}
+              >
+                Sign In
+              </Button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="relative overflow-hidden py-20 sm:py-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1
+              className={`text-5xl sm:text-7xl font-bold tracking-tight mb-8 transition-colors duration-300 ${
+                isDarkMode ? "text-white" : "text-gray-900"
+              }`}
+            >
+              Just Talk.
+              <span className="block bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                Raamu Remembers.
+              </span>
+            </h1>
+            <p
+              className={`text-xl sm:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed transition-colors duration-300 ${
+                isDarkMode ? "text-gray-300" : "text-gray-600"
+              }`}
+            >
+              Raamu is your AI-powered memory assistant that listens in the background, automatically extracting tasks,
+              appointments, and important info from your conversations.
+            </p>
+
+            {/* Feature Checkmarks */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 text-lg">
+              <div
+                className={`flex items-center gap-2 transition-colors duration-300 ${
+                  isDarkMode ? "text-gray-300" : "text-gray-700"
+                }`}
+              >
+                <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center">
+                  <Check className="h-4 w-4 text-white" />
+                </div>
+                <span>Effortless conversations</span>
+              </div>
+              <div
+                className={`flex items-center gap-2 transition-colors duration-300 ${
+                  isDarkMode ? "text-gray-300" : "text-gray-700"
+                }`}
+              >
+                <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center">
+                  <Check className="h-4 w-4 text-white" />
+                </div>
+                <span>Automatic task & calendar capture</span>
+              </div>
+              <div
+                className={`flex items-center gap-2 transition-colors duration-300 ${
+                  isDarkMode ? "text-gray-300" : "text-gray-700"
+                }`}
+              >
+                <div className="w-6 h-6 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center">
+                  <Check className="h-4 w-4 text-white" />
+                </div>
+                <span>Never forget important details again</span>
+              </div>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+              <Button
+                onClick={handleTalkToMe}
+                size="lg"
+                className="px-8 py-4 text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 text-white"
+              >
+                <Mic className="h-6 w-6 mr-3" />
+                Get Early Access
+                <ArrowRight className="h-5 w-5 ml-2" />
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className={`px-8 py-4 text-lg font-semibold border-2 transition-colors duration-300 ${
+                  isDarkMode
+                    ? "border-gray-600 text-gray-300 hover:border-gray-500 hover:bg-gray-800"
+                    : "border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-50"
+                }`}
+              >
+                <Play className="h-5 w-5 mr-2" />
+                See How It Works
+              </Button>
+            </div>
+
+            {/* Demo Preview */}
+            <div className="relative max-w-4xl mx-auto">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 blur-3xl"></div>
+              <Card
+                className={`relative border-0 shadow-2xl overflow-hidden transition-colors duration-300 ${
+                  isDarkMode ? "bg-gray-800/90 backdrop-blur-sm" : "bg-white/90 backdrop-blur-sm"
+                }`}
+              >
+                <div
+                  className={`px-6 py-4 border-b transition-colors duration-300 ${
+                    isDarkMode
+                      ? "bg-gray-700/50 border-gray-600"
+                      : "bg-gradient-to-r from-gray-50 to-gray-100 border-gray-200"
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                    <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    <span
+                      className={`ml-4 text-sm font-medium transition-colors duration-300 ${
+                        isDarkMode ? "text-gray-300" : "text-gray-600"
+                      }`}
+                    >
+                      Raamu - Smart Updates
+                    </span>
+                  </div>
+                </div>
+                <CardContent className="p-8">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="text-center">
+                      <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <Mic className="h-8 w-8 text-white" />
+                      </div>
+                      <h3
+                        className={`text-lg font-semibold mb-2 transition-colors duration-300 ${
+                          isDarkMode ? "text-gray-100" : "text-gray-900"
+                        }`}
+                      >
+                        🔊 Step 1: Just Talk
+                      </h3>
+                      <p
+                        className={`text-sm transition-colors duration-300 ${
+                          isDarkMode ? "text-gray-400" : "text-gray-600"
+                        }`}
+                      >
+                        Have your normal conversations. Whether it's a meeting, a phone call, or chatting with
+                        friends—Raamu listens passively in the background.
+                      </p>
+                      <div
+                        className={`mt-3 p-3 rounded-lg text-xs italic transition-colors duration-300 ${
+                          isDarkMode ? "bg-gray-700/50 text-gray-300" : "bg-blue-50 text-blue-700"
+                        }`}
+                      >
+                        "Let's meet next Thursday at 2 PM to finalize the report."
+                        <br />
+                        <span className="text-green-600 font-medium">☑️ Raamu remembers it for you.</span>
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <Brain className="h-8 w-8 text-white" />
+                      </div>
+                      <h3
+                        className={`text-lg font-semibold mb-2 transition-colors duration-300 ${
+                          isDarkMode ? "text-gray-100" : "text-gray-900"
+                        }`}
+                      >
+                        🤖 Step 2: AI Extracts
+                      </h3>
+                      <p
+                        className={`text-sm transition-colors duration-300 ${
+                          isDarkMode ? "text-gray-400" : "text-gray-600"
+                        }`}
+                      >
+                        Raamu uses cutting-edge language intelligence to pull out what matters: Tasks, Appointments,
+                        Deadlines, Follow-ups.
+                      </p>
+                      <div
+                        className={`mt-3 p-2 rounded-lg text-xs font-medium transition-colors duration-300 ${
+                          isDarkMode ? "bg-purple-900/30 text-purple-300" : "bg-purple-50 text-purple-700"
+                        }`}
+                      >
+                        You talk. Raamu thinks.
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <Sparkles className="h-8 w-8 text-white" />
+                      </div>
+                      <h3
+                        className={`text-lg font-semibold mb-2 transition-colors duration-300 ${
+                          isDarkMode ? "text-gray-100" : "text-gray-900"
+                        }`}
+                      >
+                        🧠 Step 3: Stay Organized
+                      </h3>
+                      <p
+                        className={`text-sm transition-colors duration-300 ${
+                          isDarkMode ? "text-gray-400" : "text-gray-600"
+                        }`}
+                      >
+                        Get clean summaries, daily digests, and smart reminders—delivered exactly when you need them.
+                      </p>
+                      <div
+                        className={`mt-3 p-2 rounded-lg text-xs transition-colors duration-300 ${
+                          isDarkMode ? "bg-blue-900/30 text-blue-300" : "bg-blue-50 text-blue-700"
+                        }`}
+                      >
+                        📌 What you said → ✍️ What you need to do
+                        <br />📅 Your week, clear and calm
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className={`py-20 transition-colors duration-300 ${isDarkMode ? "bg-gray-800/30" : "bg-white/50"}`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2
+              className={`text-4xl font-bold mb-4 transition-colors duration-300 ${
+                isDarkMode ? "text-white" : "text-gray-900"
+              }`}
+            >
+              Why Raamu?
+            </h2>
+            <p
+              className={`text-xl max-w-2xl mx-auto mb-4 transition-colors duration-300 ${
+                isDarkMode ? "text-gray-300" : "text-gray-600"
+              }`}
+            >
+              Raamu is your second brain—one that never forgets.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <Card
+              className={`p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ${
+                isDarkMode ? "bg-gray-800/80 hover:bg-gray-800" : "bg-white hover:bg-gray-50"
+              }`}
+            >
+              <CardContent className="text-center p-0">
+                <div className="text-4xl mb-4">🕒</div>
+                <h3
+                  className={`text-lg font-semibold mb-2 transition-colors duration-300 ${
+                    isDarkMode ? "text-gray-100" : "text-gray-900"
+                  }`}
+                >
+                  No manual entry
+                </h3>
+                <p
+                  className={`text-sm transition-colors duration-300 ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}
+                >
+                  Zero effort needed. Just talk naturally.
+                </p>
+              </CardContent>
+            </Card>
+            <Card
+              className={`p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ${
+                isDarkMode ? "bg-gray-800/80 hover:bg-gray-800" : "bg-white hover:bg-gray-50"
+              }`}
+            >
+              <CardContent className="text-center p-0">
+                <div className="text-4xl mb-4">📱</div>
+                <h3
+                  className={`text-lg font-semibold mb-2 transition-colors duration-300 ${
+                    isDarkMode ? "text-gray-100" : "text-gray-900"
+                  }`}
+                >
+                  Cross-platform
+                </h3>
+                <p
+                  className={`text-sm transition-colors duration-300 ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}
+                >
+                  Works across devices and apps seamlessly.
+                </p>
+              </CardContent>
+            </Card>
+            <Card
+              className={`p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ${
+                isDarkMode ? "bg-gray-800/80 hover:bg-gray-800" : "bg-white hover:bg-gray-50"
+              }`}
+            >
+              <CardContent className="text-center p-0">
+                <div className="text-4xl mb-4">🔒</div>
+                <h3
+                  className={`text-lg font-semibold mb-2 transition-colors duration-300 ${
+                    isDarkMode ? "text-gray-100" : "text-gray-900"
+                  }`}
+                >
+                  Privacy-first
+                </h3>
+                <p
+                  className={`text-sm transition-colors duration-300 ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}
+                >
+                  You control what's saved and processed.
+                </p>
+              </CardContent>
+            </Card>
+            <Card
+              className={`p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ${
+                isDarkMode ? "bg-gray-800/80 hover:bg-gray-800" : "bg-white hover:bg-gray-50"
+              }`}
+            >
+              <CardContent className="text-center p-0">
+                <div className="text-4xl mb-4">🧠</div>
+                <h3
+                  className={`text-lg font-semibold mb-2 transition-colors duration-300 ${
+                    isDarkMode ? "text-gray-100" : "text-gray-900"
+                  }`}
+                >
+                  Smarter over time
+                </h3>
+                <p
+                  className={`text-sm transition-colors duration-300 ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}
+                >
+                  Learns your habits and preferences.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Social Proof */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2
+              className={`text-4xl font-bold mb-4 transition-colors duration-300 ${
+                isDarkMode ? "text-white" : "text-gray-900"
+              }`}
+            >
+              What People Are Saying
+            </h2>
+            <div
+              className={`flex justify-center items-center gap-8 mb-12 transition-colors duration-300 ${
+                isDarkMode ? "text-gray-400" : "text-gray-500"
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <Users className="h-5 w-5" />
+                <span>10,000+ users</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckSquare className="h-5 w-5" />
+                <span>50,000+ tasks captured</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Calendar className="h-5 w-5" />
+                <span>25,000+ events organized</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <Card
+              className={`p-8 rounded-2xl shadow-lg transition-colors duration-300 ${
+                isDarkMode ? "bg-gray-800/80" : "bg-white"
+              }`}
+            >
+              <CardContent className="p-0">
+                <div className="flex mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                  ))}
+                </div>
+                <blockquote
+                  className={`mb-4 leading-relaxed transition-colors duration-300 ${
+                    isDarkMode ? "text-gray-300" : "text-gray-700"
+                  }`}
+                >
+                  "Raamu changed how I work. I stopped missing follow-ups and started feeling truly organized."
+                </blockquote>
+                <footer
+                  className={`text-sm transition-colors duration-300 ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}
+                >
+                  — Priya V., Product Manager
+                </footer>
+              </CardContent>
+            </Card>
+            <Card
+              className={`p-8 rounded-2xl shadow-lg transition-colors duration-300 ${
+                isDarkMode ? "bg-gray-800/80" : "bg-white"
+              }`}
+            >
+              <CardContent className="p-0">
+                <div className="flex mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                  ))}
+                </div>
+                <blockquote
+                  className={`mb-4 leading-relaxed transition-colors duration-300 ${
+                    isDarkMode ? "text-gray-300" : "text-gray-700"
+                  }`}
+                >
+                  "I talk. Raamu does the rest. It's like having a personal assistant who never sleeps."
+                </blockquote>
+                <footer
+                  className={`text-sm transition-colors duration-300 ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}
+                >
+                  — Jay M., Founder
+                </footer>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
+        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">Ready to Remember Everything?</h2>
+          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+            Start with Raamu and never lose track of what matters again.
+          </p>
+          <Button
+            onClick={handleTalkToMe}
+            size="lg"
+            className="px-8 py-4 text-lg font-semibold bg-white text-blue-600 hover:bg-gray-50 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+          >
+            <Mic className="h-6 w-6 mr-3" />🔊 Try Raamu Now
+            <ArrowRight className="h-5 w-5 ml-2" />
+          </Button>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className={`py-12 transition-colors duration-300 ${isDarkMode ? "bg-gray-900" : "bg-gray-900"}`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                <Brain className="h-5 w-5 text-white" />
+              </div>
+              <span className="text-xl font-bold text-white">Raamu</span>
+            </div>
+            <p className="text-gray-400 mb-4">Privacy-first AI Memory Assistant</p>
+            <div className="flex justify-center gap-6 text-sm text-gray-400">
+              <a href="#" className="underline hover:text-white transition-colors duration-200">
+                Privacy Policy
+              </a>
+              <a href="#" className="underline hover:text-white transition-colors duration-200">
+                Terms of Use
+              </a>
+              <a href="#" className="underline hover:text-white transition-colors duration-200">
+                Contact
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  )
 }
