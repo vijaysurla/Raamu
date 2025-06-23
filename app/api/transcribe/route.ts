@@ -9,6 +9,15 @@ async function fileToBuffer(file: File): Promise<Buffer> {
   return Buffer.from(arrayBuffer);
 }
 
+// Handle OPTIONS requests for CORS preflight
+export async function OPTIONS(request: NextRequest) {
+  const headers = new Headers();
+  headers.set('Access-Control-Allow-Origin', '*');
+  headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  return new NextResponse(null, { status: 204, headers });
+}
+
 export async function POST(req: NextRequest) {
   try {
     const formData: any = await req.formData();
@@ -47,8 +56,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ transcription }, {
       headers: {
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       },
     });
 

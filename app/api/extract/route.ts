@@ -1,7 +1,16 @@
 import { generateObject } from "ai"
 import { createDeepInfra } from "@ai-sdk/deepinfra"
 import { z } from "zod"
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
+
+// Handle OPTIONS requests for CORS preflight
+export async function OPTIONS(request: NextRequest) {
+  const headers = new Headers();
+  headers.set('Access-Control-Allow-Origin', '*');
+  headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  return new NextResponse(null, { status: 204, headers });
+}
 
 const deepinfra = createDeepInfra({
   apiKey: process.env.DEEPINFRA_API_KEY,
@@ -76,8 +85,6 @@ export async function POST(req: Request) {
     return NextResponse.json(result.object, {
       headers: {
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       },
     });
   } catch (error) {
