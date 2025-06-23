@@ -44,7 +44,13 @@ export async function POST(req: NextRequest) {
     const result = await response.json();
     const transcription = result.text;
 
-    return NextResponse.json({ transcription });
+    return NextResponse.json({ transcription }, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      },
+    });
 
   } catch (error) {
     console.error('Transcription endpoint error:', error);

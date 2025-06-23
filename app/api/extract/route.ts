@@ -1,6 +1,7 @@
 import { generateObject } from "ai"
 import { createDeepInfra } from "@ai-sdk/deepinfra"
 import { z } from "zod"
+import { NextResponse } from "next/server"
 
 const deepinfra = createDeepInfra({
   apiKey: process.env.DEEPINFRA_API_KEY,
@@ -72,7 +73,13 @@ export async function POST(req: Request) {
       `,
     })
 
-    return Response.json(result.object)
+    return NextResponse.json(result.object, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      },
+    });
   } catch (error) {
     console.error("Extraction error:", error)
     return Response.json({ error: "Failed to extract information" }, { status: 500 })
