@@ -1,63 +1,61 @@
-import { generateObject } from "ai"
-import { createDeepInfra } from "@ai-sdk/deepinfra"
-import { z } from "zod"
-import { NextRequest, NextResponse } from "next/server"
+import { generateObject } from "ai";
+import { deepinfra } from "@ai-sdk/deepinfra";
+import { z } from "zod";
+import { NextResponse } from "next/server";
+
+export const maxDuration = 30;
+
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
 
 // Handle OPTIONS requests for CORS preflight
-export async function OPTIONS(request: NextRequest) {
-  const headers = new Headers();
-  headers.set('Access-Control-Allow-Origin', '*');
-  headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  return new NextResponse(null, { status: 204, headers });
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 204,
+    headers: CORS_HEADERS,
+  });
 }
-
-const deepinfra = createDeepInfra({
-  apiKey: process.env.DEEPINFRA_API_KEY,
-})
 
 // Schema for extracted information
 const extractionSchema = z.object({
-  tasks: z.array(
-    z.object({
-      task: z.string(),
-      priority: z.enum(["low", "medium", "high"]).optional(),
-      deadline: z.string().optional(),
-      context: z.string(),
-    }),
-  ),
-  appointments: z.array(
-    z.object({
-      title: z.string(),
-      date: z.string(),
-      time: z.string().optional(),
-      location: z.string().optional(),
-      participants: z.array(z.string()).optional(),
-    }),
-  ),
-  locations: z.array(
-    z.object({
-      name: z.string(),
-      context: z.string(),
-      actionRequired: z.boolean(),
-    }),
-  ),
-  deadlines: z.array(
-    z.object({
-      item: z.string(),
-      date: z.string(),
-      urgency: z.enum(["low", "medium", "high"]).optional(),
-    }),
-  ),
+  tasks: z.array(z.object({
+    task: z.string(),
+    priority: z.enum(["low", "medium", "high"]).optional(),
+    deadline: z.string().optional(),
+    context: z.string(),
+  })),
+  appointments: z.array(z.object({
+    title: z.string(),
+    date: z.string(),
+    time: z.string().optional(),
+    location: z.string().optional(),
+    participants: z.array(z.string()).optional(),
+  })),
+  locations: z.array(z.object({
+    name: z.string(),
+    context: z.string(),
+    actionRequired: z.boolean(),
+  })),
+  deadlines: z.array(z.object({
+    item: z.string(),
+    date: z.string(),
+    urgency: z.enum(["low", "medium", "high"]).optional(),
+  })),
   summary: z.string(),
-})
+});
 
 export async function POST(req: Request) {
   try {
-    const { conversationText } = await req.json()
+    const { conversationText } = await req.json();
 
     if (!conversationText) {
-      return Response.json({ error: "No conversation text provided" }, { status: 400 })
+      return NextResponse.json(
+        { error: "No conversation text provided" },
+        { status: 400, headers: CORS_HEADERS }
+      );
     }
 
     const result = await generateObject({
@@ -80,15 +78,16 @@ export async function POST(req: Request) {
         Be thorough but only extract items that are clearly actionable or important.
         Focus on helping the user stay organized and never miss anything important.
       `,
-    })
+    });
 
     return NextResponse.json(result.object, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
+      headers: CORS_HEADERS,
     });
   } catch (error) {
-    console.error("Extraction error:", error)
-    return Response.json({ error: "Failed to extract information" }, { status: 500 })
+    console.error("Extraction error:", error);
+    return NextResponse.json(
+      { error: "Failed to extract information" },
+      { status: 500, headers: CORS_HEADERS }
+    );
   }
 }

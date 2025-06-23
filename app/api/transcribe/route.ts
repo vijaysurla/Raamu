@@ -4,6 +4,12 @@ import { Readable } from 'stream';
 
 export const maxDuration = 30;
 
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
+
 // Helper function to convert a file to a Buffer
 async function fileToBuffer(file: File): Promise<Buffer> {
   const arrayBuffer = await file.arrayBuffer();
@@ -12,11 +18,10 @@ async function fileToBuffer(file: File): Promise<Buffer> {
 
 // Handle OPTIONS requests for CORS preflight
 export async function OPTIONS(request: NextRequest) {
-  const headers = new Headers();
-  headers.set('Access-Control-Allow-Origin', '*');
-  headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  return new NextResponse(null, { status: 204, headers });
+  return new NextResponse(null, {
+    status: 204,
+    headers: CORS_HEADERS,
+  });
 }
 
 export async function POST(req: NextRequest) {
@@ -25,7 +30,7 @@ export async function POST(req: NextRequest) {
     const file = formData.get('audio') as File | null;
 
     if (!file) {
-      return NextResponse.json({ error: 'No audio file provided.' }, { status: 400 });
+      return NextResponse.json({ error: 'No audio file provided.' }, { status: 400, headers: CORS_HEADERS });
     }
 
     const audioBuffer = await fileToBuffer(file);
@@ -48,20 +53,18 @@ export async function POST(req: NextRequest) {
     if (!response.ok) {
       const errorText = await response.text();
       console.error('DeepInfra API Error:', errorText);
-      return NextResponse.json({ error: 'Failed to transcribe audio.', details: errorText }, { status: response.status });
+      return NextResponse.json({ error: 'Failed to transcribe audio.', details: errorText }, { status: response.status, headers: CORS_HEADERS });
     }
 
     const result = await response.json();
     const transcription = result.text;
 
     return NextResponse.json({ transcription }, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
+      headers: CORS_HEADERS,
     });
 
   } catch (error) {
     console.error('Transcription endpoint error:', error);
-    return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error.' }, { status: 500, headers: CORS_HEADERS });
   }
 } 
