@@ -1,0 +1,133 @@
+{
+  "chapterId": 1,
+  "chapterTitle": "Force and Pressure",
+  "chapterTitleTelugu": "బలం – ఒత్తిడి",
+  "experiments": [
+    {
+      "id": "exp-1",
+      "title": "Friction Lab",
+      "titleTelugu": "ఘర్షణ ప్రయోగశాల",
+      "description": "Explore how different surfaces affect friction. Adjust the applied force and surface type to see how friction changes.",
+      "descriptionTelugu": "వివిధ ఉపరితలాలు ఘర్షణను ఎలా ప్రభావితం చేస్తాయో అన్వేషించండి. అనువర్తిత బలం మరియు ఉపరితల రకాన్ని సర్దుబాటు చేయండి.",
+      "difficulty": "beginner",
+      "estimatedTime": "10 minutes",
+      "relatedPages": [15, 16],
+      "type": "3d-simulation",
+      "controls": [
+        {
+          "id": "force",
+          "label": "Applied Force",
+          "labelTelugu": "అనువర్తిత బలం",
+          "type": "slider",
+          "min": 0,
+          "max": 100,
+          "default": 50,
+          "unit": "N"
+        },
+        {
+          "id": "surface",
+          "label": "Surface Type",
+          "labelTelugu": "ఉపరితల రకం",
+          "type": "select",
+          "options": ["Wood", "Ice", "Carpet", "Oil"],
+          "default": "Wood"
+        }
+      ],
+      "measurements": [
+        {
+          "id": "friction",
+          "label": "Friction Force",
+          "labelTelugu": "ఘర్షణ బలం",
+          "unit": "N"
+        },
+        {
+          "id": "coefficient",
+          "label": "Coefficient (μ)",
+          "labelTelugu": "గుణకం (μ)",
+          "unit": ""
+        },
+        {
+          "id": "netForce",
+          "label": "Net Force",
+          "labelTelugu": "నికర బలం",
+          "unit": "N"
+        }
+      ]
+    },
+    {
+      "id": "exp-2",
+      "title": "Pressure Demonstration",
+      "titleTelugu": "ఒత్తిడి ప్రదర్శన",
+      "description": "Understand how pressure varies with area. Adjust force and contact area to see pressure change in real-time.",
+      "descriptionTelugu": "ప్రాంతంతో ఒత్తిడి ఎలా మారుతుందో అర్థం చేసుకోండి. బలం మరియు సంపర్క ప్రాంతాన్ని సర్దుబాటు చేయండి.",
+      "difficulty": "beginner",
+      "estimatedTime": "8 minutes",
+      "relatedPages": [22, 23],
+      "type": "interactive-demo",
+      "controls": [
+        {
+          "id": "force",
+          "label": "Force",
+          "labelTelugu": "బలం",
+          "type": "slider",
+          "min": 10,
+          "max": 100,
+          "default": 50,
+          "unit": "N"
+        },
+        {
+          "id": "area",
+          "label": "Contact Area",
+          "labelTelugu": "సంపర్క ప్రాంతం",
+          "type": "slider",
+          "min": 1,
+          "max": 20,
+          "default": 10,
+          "unit": "cm²"
+        }
+      ],
+      "measurements": [
+        {
+          "id": "pressure",
+          "label": "Pressure",
+          "labelTelugu": "ఒత్తిడి",
+          "unit": "N/cm²"
+        }
+      ]
+    },
+    {
+      "id": "exp-3",
+      "title": "Force Vectors",
+      "titleTelugu": "బలం వెక్టర్లు",
+      "description": "Visualize how forces add in different directions. See how net force affects motion.",
+      "descriptionTelugu": "వివిధ దిశలలో బలాలు ఎలా జోడించబడతాయో దృశ్యమానం చేయండి.",
+      "difficulty": "intermediate",
+      "estimatedTime": "15 minutes",
+      "relatedPages": [7, 8],
+      "type": "3d-simulation"
+    }
+  ],
+  "videos": [
+    {
+      "id": "video-1",
+      "title": "Introduction to Forces",
+      "titleTelugu": "బలాలకు పరిచయం",
+      "duration": "12:30",
+      "thumbnail": "/videos/force-intro-thumb.jpg",
+      "youtubeId": "",
+      "relatedPages": [2, 3, 4]
+    }
+  ],
+  "activities": [
+    {
+      "id": "activity-1",
+      "title": "Push or Pull Classification",
+      "titleTelugu": "పుష్ లేదా పుల్ వర్గీకరణ",
+      "description": "Interactive activity to classify everyday actions as push or pull",
+      "descriptionTelugu": "రోజువారీ చర్యలను పుష్ లేదా పుల్గా వర్గీకరించడానికి ఇంటరాక్టివ్ కార్యకలాపం",
+      "type": "quiz",
+      "relatedPages": [3, 4]
+    }
+  ]
+}
+
