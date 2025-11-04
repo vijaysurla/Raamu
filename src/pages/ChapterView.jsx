@@ -3,13 +3,14 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
-import { Book, Beaker, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, ArrowLeft, MessageSquare, X } from 'lucide-react';
+import { Book, Beaker, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, ArrowLeft, MessageSquare, X, FlaskConical } from 'lucide-react';
 import { Card } from '../components/common/Card';
 import Button from '../components/common/Button';
 import Badge from '../components/common/Badge';
 import { useLanguage } from '../context/LanguageContext';
 import { useUser } from '../context/UserContext';
 import { useSupplementalMaterials } from '../hooks/useSupplementalMaterials';
+import TextbookActivitiesView from '../components/activities/TextbookActivitiesView';
 import './ChapterView.css';
 
 // Configure PDF.js worker - MUST be done once at module load time
@@ -56,6 +57,7 @@ export default function ChapterView() {
   const [controlValues, setControlValues] = useState({});
   const [pdfError, setPdfError] = useState(null);
   const [workerReady, setWorkerReady] = useState(false);
+  const [viewMode, setViewMode] = useState('pdf'); // 'pdf' or 'activities'
 
   // Get chapter data from URL params or fallback to defaults
   const chapterNumber = parseInt(id) || 1;
@@ -238,6 +240,15 @@ export default function ChapterView() {
 
   const measurements = calculateMeasurements();
 
+  // Handle activity page change (for Activities view)
+  const handleActivityPageChange = (physicalPage) => {
+    // Calculate logical page from physical page
+    const logicalPage = language === 'en' 
+      ? Math.ceil(physicalPage / 2)  // English: odd pages (1,3,5...) → logical (1,2,3...)
+      : Math.ceil(physicalPage / 2); // Telugu: even pages (2,4,6...) → logical (1,2,3...)
+    setCurrentPage(logicalPage);
+  };
+
   if (!chapterData) {
     return (
       <div className="chapter-view">
@@ -246,6 +257,18 @@ export default function ChapterView() {
           <Button onClick={() => navigate(-1)}>Go Back</Button>
         </div>
       </div>
+    );
+  }
+
+  // Show Activities view if selected
+  if (viewMode === 'activities') {
+    return (
+      <TextbookActivitiesView 
+        pdfFile={pdfFile}
+        currentPdfPage={currentPdfPage}
+        zoom={zoom}
+        onActivityPageChange={handleActivityPageChange}
+      />
     );
   }
 
@@ -269,15 +292,33 @@ export default function ChapterView() {
           </div>
         </div>
         <div className="chapter-controls">
-          <Button 
-            variant="ghost" 
-            size="sm"
-            onClick={() => setShowSupplemental(!showSupplemental)}
-          >
-            <Beaker size={20} />
-            {language === 'en' ? 'Experiments' : 'ప్రయోగాలు'} 
-            {materials?.experiments?.length > 0 && ` (${materials.experiments.length})`}
-          </Button>
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+            <Button 
+              variant={viewMode === 'pdf' ? 'primary' : 'ghost'}
+              size="sm"
+              onClick={() => setViewMode('pdf')}
+            >
+              <Book size={18} />
+              {language === 'en' ? 'Textbook' : 'పాఠ్యపుస్తకం'}
+            </Button>
+            <Button 
+              variant={viewMode === 'activities' ? 'primary' : 'ghost'}
+              size="sm"
+              onClick={() => setViewMode('activities')}
+            >
+              <FlaskConical size={18} />
+              {language === 'en' ? 'Activities' : 'కార్యకలాపాలు'}
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => setShowSupplemental(!showSupplemental)}
+            >
+              <Beaker size={20} />
+              {language === 'en' ? 'Experiments' : 'ప్రయోగాలు'} 
+              {materials?.experiments?.length > 0 && ` (${materials.experiments.length})`}
+            </Button>
+          </div>
         </div>
       </div>
 
