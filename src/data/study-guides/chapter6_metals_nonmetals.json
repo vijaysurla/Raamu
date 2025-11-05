@@ -1,0 +1,253 @@
+{
+  "id": "g8_physics_ch6",
+  "grade": 8,
+  "subject": "Physical Science",
+  "chapterNumber": 6,
+  "chapterTitle": "Materials: Metals and Non-Metals",
+  "totalTime": 10,
+  "overview": "Chapter 6 focuses on classifying materials based on their physical and chemical properties, specifically distinguishing between metals and non-metals.",
+  "sections": [
+    {
+      "sectionNumber": 1,
+      "title": "Physical Properties",
+      "timeMinutes": 3,
+      "content": {
+        "introduction": "The chapter begins by using hands-on activities to define physical properties that distinguish metals from non-metals.",
+        "keyPoints": [
+          {
+            "title": "Lustre and Hardness",
+            "description": "Metals are typically lustrous (shiny) and generally hard. Non-metals, such as coal and sulfur, are usually soft and dull in appearance.",
+            "highlights": ["lustrous", "shiny", "hard", "dull"],
+            "subPoints": [
+              "Metals: Lustrous (shiny) and hard",
+              "Non-metals: Dull and usually soft",
+              "Exception: Sodium and potassium are soft metals (can be cut with knife)",
+              "Exception: Mercury is the only liquid metal at room temperature"
+            ],
+            "examples": [
+              "Lustrous metals: Gold, silver, copper",
+              "Dull non-metals: Coal, sulfur",
+              "Soft metals: Sodium, potassium (can be cut with knife)",
+              "Liquid metal: Mercury (thermometers)"
+            ]
+          },
+          {
+            "title": "Malleability",
+            "description": "The ability of a material to be beaten into thin sheets is called malleability. Metals like iron and aluminum are malleable. Non-metals (like coal and pencil lead) break into a powdery mass when hammered and are not malleable.",
+            "highlights": ["malleability", "beaten into thin sheets", "malleable"],
+            "subPoints": [
+              "Metals: Malleable (can be beaten into thin sheets)",
+              "Non-metals: Break into powder when hammered"
+            ],
+            "examples": [
+              "Malleable metals: Iron, aluminum (made into sheets)",
+              "Gold foil for decoration",
+              "Aluminum foil for food packaging",
+              "Non-malleable: Coal, pencil lead (break into powder)"
+            ]
+          },
+          {
+            "title": "Ductility",
+            "description": "The property by which a material can be drawn into wires is called ductility. Metals (like copper and aluminum) are ductile; non-metals are not.",
+            "highlights": ["ductility", "drawn into wires", "ductile"],
+            "subPoints": [
+              "Metals: Ductile (can be drawn into wires)",
+              "Non-metals: Not ductile"
+            ],
+            "examples": [
+              "Ductile metals: Copper wires for electricity",
+              "Aluminum wires for transmission lines",
+              "Gold wires in electronics"
+            ]
+          },
+          {
+            "title": "Sonorous",
+            "description": "Metals produce a ringing sound when struck hard and are therefore called sonorous. Non-metals are not sonorous.",
+            "highlights": ["sonorous", "ringing sound"],
+            "examples": [
+              "School bells made of metal",
+              "Metal gongs in temples",
+              "Cymbals in music",
+              "Non-metals: No ringing sound when struck"
+            ]
+          },
+          {
+            "title": "Conduction",
+            "description": "Metals are generally good conductors of heat and electricity (e.g., iron, copper). Non-metals (e.g., sulfur, coal) are poor conductors of both heat and electricity.",
+            "highlights": ["good conductors", "heat and electricity", "poor conductors"],
+            "subPoints": [
+              "Metals: Good conductors of heat and electricity",
+              "Non-metals: Poor conductors (insulators)"
+            ],
+            "examples": [
+              "Copper wires conduct electricity",
+              "Iron pans conduct heat for cooking",
+              "Aluminum in electrical appliances",
+              "Non-conductors: Sulfur, coal (insulators)"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "sectionNumber": 2,
+      "title": "Chemical Properties",
+      "timeMinutes": 4,
+      "content": {
+        "introduction": "The chemical reactions of materials reveal critical differences, particularly in how they react with oxygen, water, acids, and bases.",
+        "keyPoints": [
+          {
+            "title": "Reaction with Oxygen (Oxides)",
+            "description": "Metals react with oxygen to form metal oxides, which are basic in nature. Non-metals react with oxygen to form non-metallic oxides, which are acidic in nature.",
+            "highlights": ["metal oxides", "basic in nature", "non-metallic oxides", "acidic in nature"],
+            "subPoints": [
+              "Metal + Oxygen → Metal Oxide (Basic)",
+              "Non-metal + Oxygen → Non-metallic Oxide (Acidic)"
+            ],
+            "examples": [
+              "Magnesium oxide dissolved in water turns red litmus paper blue (basic)",
+              "Sulfur dioxide dissolved in water forms sulfurous acid, turns blue litmus paper red (acidic)"
+            ]
+          },
+          {
+            "title": "Reaction with Water",
+            "description": "Some metals (like sodium) react vigorously with water, generating heat, and form metal hydroxides and hydrogen gas. Other metals (like iron) react slowly. Generally, non-metals do not react with water.",
+            "highlights": ["react vigorously", "metal hydroxides", "hydrogen gas", "do not react with water"],
+            "subPoints": [
+              "Reactive metals: React vigorously with water → Metal hydroxide + Hydrogen gas",
+              "Less reactive metals: React slowly (like iron rusting)",
+              "Non-metals: Generally do not react with water",
+              "Exception: Highly reactive non-metals like phosphorus stored in water to prevent air contact"
+            ],
+            "examples": [
+              "Sodium reacts vigorously with water (generates heat, forms sodium hydroxide)",
+              "Iron reacts slowly with water (rusting)",
+              "Phosphorus stored in water (prevents reaction with air)"
+            ]
+          },
+          {
+            "title": "Reaction with Acids",
+            "description": "Metals react with acids to produce metal salts and hydrogen gas. The hydrogen gas burns with a characteristic 'pop' sound. Generally, non-metals do not react with acids.",
+            "highlights": ["metal salts", "hydrogen gas", "pop sound", "do not react with acids"],
+            "subPoints": [
+              "Metal + Acid → Metal Salt + Hydrogen gas",
+              "Hydrogen test: Burns with 'pop' sound",
+              "Non-metals: Generally do not react with acids"
+            ],
+            "examples": [
+              "Zinc + Hydrochloric acid → Zinc chloride + Hydrogen gas (pop sound)",
+              "Magnesium + Sulfuric acid → Magnesium sulfate + Hydrogen gas"
+            ]
+          },
+          {
+            "title": "Reaction with Bases",
+            "description": "Some metals (like aluminum) react with bases (like sodium hydroxide) to produce hydrogen gas (indicated by a 'pop' sound). Reactions of non-metals with bases are complex.",
+            "highlights": ["react with bases", "hydrogen gas", "complex reactions"],
+            "subPoints": [
+              "Some metals + Base → Salt + Hydrogen gas",
+              "Non-metals: Complex reactions with bases"
+            ],
+            "examples": [
+              "Aluminum + Sodium hydroxide → Sodium aluminate + Hydrogen gas (pop sound)"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "sectionNumber": 3,
+      "title": "Displacement Reactions and Reactivity",
+      "timeMinutes": 2,
+      "content": {
+        "introduction": "Displacement reactions demonstrate the relative chemical activity of metals.",
+        "keyPoints": [
+          {
+            "title": "Displacement Rule",
+            "description": "A more reactive metal can displace a less reactive metal from its compound in an aqueous solution. A less reactive metal cannot displace a more reactive metal.",
+            "highlights": ["more reactive metal", "displace", "less reactive metal"],
+            "formula": {
+              "text": "More Reactive Metal + Less Reactive Metal Compound → More Reactive Metal Compound + Less Reactive Metal"
+            },
+            "subPoints": [
+              "More reactive displaces less reactive",
+              "Less reactive cannot displace more reactive"
+            ]
+          },
+          {
+            "title": "Zinc and Copper Example",
+            "description": "Zinc displaces copper from copper sulfate solution (turning the solution colorless and depositing red copper) because zinc is more reactive than copper. However, copper cannot displace zinc from zinc sulfate solution.",
+            "highlights": ["Zinc displaces copper", "copper cannot displace zinc"],
+            "examples": [
+              "Zinc + Copper sulfate → Zinc sulfate + Copper (red deposit)",
+              "Solution turns colorless (blue copper sulfate becomes colorless zinc sulfate)",
+              "Copper + Zinc sulfate → No reaction (copper less reactive than zinc)"
+            ]
+          },
+          {
+            "title": "Reactivity Series",
+            "description": "The reactivity series helps predict which metal will displace another.",
+            "subPoints": [
+              "Most reactive metals at top (Potassium, Sodium, Calcium)",
+              "Moderately reactive in middle (Magnesium, Aluminum, Zinc, Iron)",
+              "Least reactive at bottom (Copper, Silver, Gold)"
+            ],
+            "examples": [
+              "Iron can displace copper but not zinc",
+              "Magnesium can displace iron and copper",
+              "Gold is very unreactive (doesn't displace any metal)"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "sectionNumber": 4,
+      "title": "Uses of Materials",
+      "timeMinutes": 1,
+      "content": {
+        "introduction": "Metals and non-metals have wide-ranging applications:",
+        "keyPoints": [
+          {
+            "title": "Uses of Metals",
+            "description": "Used in machinery, automobiles, satellites, industrial gadgets, and cooking utensils due to their strength and conductivity.",
+            "highlights": ["strength", "conductivity"],
+            "examples": [
+              "Machinery and tools (strength)",
+              "Automobiles and vehicles (strength, malleability)",
+              "Satellites and aircraft (lightweight aluminum)",
+              "Industrial gadgets and equipment",
+              "Cooking utensils (heat conduction)",
+              "Electrical wires (copper for conductivity)",
+              "Building construction (iron, steel for strength)"
+            ]
+          },
+          {
+            "title": "Uses of Non-Metals",
+            "description": "Essential for life (like Oxygen in breathing), used in fertilizers to enhance plant growth, utilized in water purification processes (like chlorine), and used as antiseptics (like iodine in purple solutions applied to wounds).",
+            "highlights": ["essential for life", "fertilizers", "water purification", "antiseptics"],
+            "examples": [
+              "Oxygen: Essential for breathing and combustion",
+              "Nitrogen: Used in fertilizers for plant growth",
+              "Chlorine: Water purification and disinfection",
+              "Iodine: Antiseptic (purple solution for wounds)",
+              "Carbon: In fuels, pencils, and organic compounds",
+              "Sulfur: In medicines and vulcanization of rubber",
+              "Phosphorus: In fertilizers and matches"
+            ]
+          }
+        ],
+        "keyTakeaway": {
+          "title": "Complementary Materials",
+          "content": "Metals and non-metals have complementary properties and uses. Metals provide strength, conductivity, and malleability for construction and electrical applications. Non-metals are essential for life processes, agriculture, medicine, and chemical industries. Understanding their distinct physical and chemical properties allows us to select the right material for each specific application, making both equally important for modern civilization."
+        }
+      }
+    }
+  ],
+  "chapterSummary": "This chapter establishes the fundamental distinction between metals and non-metals based on physical properties (lustre, malleability, ductility, sonority, conductivity) and chemical properties (reactions with oxygen, water, acids, and bases). Metals form basic oxides, react with acids to produce hydrogen, and are good conductors. Non-metals form acidic oxides, generally don't react with water or acids, and are poor conductors. Displacement reactions demonstrate relative reactivity, with more reactive metals displacing less reactive ones. Both material types have crucial applications: metals in construction and machinery, non-metals in life processes and chemical industries.",
+  "previousChapter": {
+    "number": 5,
+    "title": "Sound",
+    "id": "g8_physics_ch5"
+  }
+}
+

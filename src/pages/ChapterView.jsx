@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
-import { Book, Beaker, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, ArrowLeft, MessageSquare, X, FlaskConical } from 'lucide-react';
+import { Book, Beaker, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, ArrowLeft, MessageSquare, X, FlaskConical, FileText } from 'lucide-react';
 import { Card } from '../components/common/Card';
 import Button from '../components/common/Button';
 import Badge from '../components/common/Badge';
@@ -11,6 +11,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { useUser } from '../context/UserContext';
 import { useSupplementalMaterials } from '../hooks/useSupplementalMaterials';
 import TextbookActivitiesView from '../components/activities/TextbookActivitiesView';
+import StudyGuide from '../components/study-guide/StudyGuide';
 import './ChapterView.css';
 
 // Configure PDF.js worker - MUST be done once at module load time
@@ -126,9 +127,9 @@ export default function ChapterView() {
   const [zoom, setZoom] = useState(100);
   const [showSupplemental, setShowSupplemental] = useState(false);
   const [controlValues, setControlValues] = useState({});
+  const [activeTab, setActiveTab] = useState('textbook'); // 'textbook' | 'activities' | 'study-guide' | 'qa' | 'quiz'
   const [pdfError, setPdfError] = useState(null);
   const [workerReady, setWorkerReady] = useState(false);
-  const [activeTab, setActiveTab] = useState('textbook'); // 'textbook' | 'activities' | 'qa' | 'quiz'
 
   // Get chapter data from URL params or fallback to defaults
   const chapterNumber = parseInt(id) || 1;
@@ -365,6 +366,13 @@ export default function ChapterView() {
         >
           <FlaskConical size={18} />
           {language === 'en' ? 'Activities' : 'కార్యకలాపాలు'}
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'study-guide' ? 'active' : ''}`}
+          onClick={() => setActiveTab('study-guide')}
+        >
+          <FileText size={18} />
+          {language === 'en' ? '10-min Study Guide' : '10-నిమి స్టడీ గైడ్'}
         </button>
         <button 
           className={`tab-button ${activeTab === 'qa' ? 'active' : ''}`}
@@ -790,7 +798,25 @@ export default function ChapterView() {
         </div>
         )}
 
-        {/* Tab 3: Q&A (Full Width) */}
+        {/* Tab 3: 10-min Study Guide (Full Width) */}
+        {activeTab === 'study-guide' && (
+          <div className="pane study-guide-pane">
+            <Card className="pane-card">
+              <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                <div style={{ flex: 1, overflow: 'auto' }}>
+                  <StudyGuide 
+                    grade={grade}
+                    subject={subject}
+                    chapterNumber={chapterNumber}
+                    language={language}
+                  />
+                </div>
+              </div>
+            </Card>
+          </div>
+        )}
+
+        {/* Tab 4: Q&A (Full Width) */}
         {activeTab === 'qa' && (
               <div className="pane qa-pane">
                 <Card className="pane-card">
@@ -806,7 +832,7 @@ export default function ChapterView() {
               </div>
             )}
 
-        {/* Tab 4: Quiz (Full Width) */}
+        {/* Tab 5: Quiz (Full Width) */}
         {activeTab === 'quiz' && (
               <div className="pane quiz-pane">
                 <Card className="pane-card">
