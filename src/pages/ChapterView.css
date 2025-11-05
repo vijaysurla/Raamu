@@ -32,13 +32,66 @@
   gap: var(--space-2);
 }
 
-/* Three-Pane Layout */
-.three-pane-layout {
-  display: grid;
-  grid-template-columns: 1fr 1.3fr 1fr;
-  gap: var(--space-4);
+/* Tab Navigation */
+.tab-navigation {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-4) 0;
+  border-bottom: 2px solid var(--gray-200);
+  background: var(--bg-primary);
+  flex-shrink: 0;
+}
+
+.tab-button {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--gray-600);
+  font-size: var(--text-base);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  margin-bottom: -2px; /* Align with border */
+}
+
+.tab-button:hover {
+  color: var(--primary-600);
+  background: var(--primary-50);
+}
+
+.tab-button.active {
+  color: var(--primary-700);
+  border-bottom-color: var(--primary-600);
+  font-weight: var(--font-semibold);
+  background: var(--primary-50);
+}
+
+/* Tab Content */
+.tab-content {
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
   padding: var(--space-4);
+}
+
+/* Two-Panel Layout for Textbook + Copilot Tab */
+.two-panel-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
   height: 100%;
+  overflow: hidden;
+}
+
+.two-panel-layout .pdf-pane {
+  overflow: hidden;
+}
+
+.two-panel-layout .copilot-pane {
   overflow: hidden;
 }
 
@@ -46,6 +99,8 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
+  height: 100%;
+  padding: 0;
 }
 
 .pane-card {
@@ -95,26 +150,30 @@
 
 .pdf-viewer {
   flex: 1;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: auto;
   background: #e0e0e0;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: var(--space-4);
-  min-height: 400px;
+  padding: var(--space-2);
+  min-height: 0;
   width: 100%;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
 
 .pdf-viewer .react-pdf__Document {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+  width: 100%;
 }
 
 .pdf-viewer .react-pdf__Page {
   box-shadow: var(--shadow-xl);
   margin-bottom: var(--space-4);
   max-width: 100%;
+  width: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -122,8 +181,43 @@
 
 .pdf-viewer .react-pdf__Page__canvas {
   max-width: 100%;
-  height: auto;
+  width: auto !important;
+  height: auto !important;
   display: block;
+}
+
+/* Make PDF page fill available width */
+.pdf-pane .react-pdf__Page {
+  width: auto !important;
+  max-width: 100% !important;
+  margin: 0 auto;
+}
+
+.pdf-pane .react-pdf__Page canvas {
+  max-width: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  display: block;
+}
+
+/* Adjust PDF to fit at 40% width - allow proper scrolling */
+.textbook-column .pdf-viewer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.textbook-column .react-pdf__Page {
+  width: auto !important;
+  max-width: 100%;
+}
+
+.textbook-column .react-pdf__Page canvas {
+  max-width: 100%;
+  height: auto;
+  width: auto !important;
 }
 
 .pdf-viewer .react-pdf__Page__textContent {

@@ -41,6 +41,77 @@ const chapterMetadata = {
         pdfFile: '/assets/textbooks/class8_physics_ch1.pdf',
         totalPages: 38, // Physical pages in PDF
         logicalPages: 19 // Logical pages (EN/TE pairs)
+      },
+      2: {
+        title: 'Friction',
+        titleTelugu: 'ఘర్షణ',
+        pdfFile: '/assets/textbooks/class8_physics_ch2.pdf',
+        totalPages: 30, // Placeholder - update when you know actual page count
+        logicalPages: 15 // Placeholder - update when you know actual page count
+      },
+      3: {
+        title: 'Coal and Petroleum',
+        titleTelugu: 'బొగ్గు – పెట్రోలియం',
+        pdfFile: '/assets/textbooks/class8_physics_ch3.pdf',
+        totalPages: 30, // Placeholder - update when you know actual page count
+        logicalPages: 15 // Placeholder - update when you know actual page count
+      },
+      4: {
+        title: 'Synthetic Fibres and Plastics',
+        titleTelugu: 'కృత్రిమ దారాలు – ప్లాస్టిక్లు',
+        pdfFile: '/assets/textbooks/class8_physics_ch4.pdf',
+        totalPages: 30, // Placeholder - update when you know actual page count
+        logicalPages: 15 // Placeholder - update when you know actual page count
+      },
+      5: {
+        title: 'Sound',
+        titleTelugu: 'ధ్వని',
+        pdfFile: '/assets/textbooks/class8_physics_ch5.pdf',
+        totalPages: 30, // Placeholder - update when you know actual page count
+        logicalPages: 15 // Placeholder - update when you know actual page count
+      },
+      6: {
+        title: 'Materials: Metals and Non-Metals',
+        titleTelugu: 'పదార్థాలు : లోహాలు – అలోహాలు',
+        pdfFile: '/assets/textbooks/class8_physics_ch6.pdf',
+        totalPages: 30, // Placeholder - update when you know actual page count
+        logicalPages: 15 // Placeholder - update when you know actual page count
+      },
+      // Semester 2 chapters
+      7: {
+        title: 'Light',
+        titleTelugu: 'కాంతి',
+        pdfFile: '/assets/textbooks/class8_physics_ch7.pdf',
+        totalPages: 30, // Placeholder - update when you know actual page count
+        logicalPages: 15 // Placeholder - update when you know actual page count
+      },
+      8: {
+        title: 'Chemical Effects of Electric Current',
+        titleTelugu: 'విద్యుత్ ప్రభావం – రసాయన ఫలితం',
+        pdfFile: '/assets/textbooks/class8_physics_ch8.pdf',
+        totalPages: 30, // Placeholder - update when you know actual page count
+        logicalPages: 15 // Placeholder - update when you know actual page count
+      },
+      9: {
+        title: 'Some Natural Phenomena',
+        titleTelugu: 'కొన్ని సహజ దృగ్విషయాలు',
+        pdfFile: '/assets/textbooks/class8_physics_ch9.pdf',
+        totalPages: 30, // Placeholder - update when you know actual page count
+        logicalPages: 15 // Placeholder - update when you know actual page count
+      },
+      10: {
+        title: 'Combustion and Flame',
+        titleTelugu: 'దహనము – జ్వాల',
+        pdfFile: '/assets/textbooks/class8_physics_ch10.pdf',
+        totalPages: 30, // Placeholder - update when you know actual page count
+        logicalPages: 15 // Placeholder - update when you know actual page count
+      },
+      11: {
+        title: 'Stars and the Solar System',
+        titleTelugu: 'నక్షత్రాలు – సౌరమండలం',
+        pdfFile: '/assets/textbooks/class8_physics_ch11.pdf',
+        totalPages: 30, // Placeholder - update when you know actual page count
+        logicalPages: 15 // Placeholder - update when you know actual page count
       }
     }
   }
@@ -57,7 +128,7 @@ export default function ChapterView() {
   const [controlValues, setControlValues] = useState({});
   const [pdfError, setPdfError] = useState(null);
   const [workerReady, setWorkerReady] = useState(false);
-  const [viewMode, setViewMode] = useState('pdf'); // 'pdf' or 'activities'
+  const [activeTab, setActiveTab] = useState('textbook'); // 'textbook' | 'activities' | 'qa' | 'quiz'
 
   // Get chapter data from URL params or fallback to defaults
   const chapterNumber = parseInt(id) || 1;
@@ -66,7 +137,8 @@ export default function ChapterView() {
   
   const chapterData = chapterMetadata[grade]?.[subject]?.[chapterNumber];
   // Ensure PDF path is absolute and correct for Vite
-  const pdfFile = chapterData?.pdfFile || '/assets/textbooks/class8_physics_ch1.pdf';
+  // Fallback to chapter 1 if chapter not found
+  const pdfFile = chapterData?.pdfFile || `/assets/textbooks/class8_physics_ch${chapterNumber || 1}.pdf`;
   const totalLogicalPages = chapterData?.logicalPages || 19;
 
   // Debug logging
@@ -210,24 +282,7 @@ export default function ChapterView() {
     
     const measurements = {};
     
-    if (activeExperiment.id === 'exp-1') {
-      // Friction lab calculations
-      const force = controlValues.force || 50;
-      const surface = controlValues.surface || 'Wood';
-      const frictionCoefficients = {
-        'Wood': 0.5,
-        'Ice': 0.1,
-        'Carpet': 0.8,
-        'Oil': 0.05
-      };
-      const coefficient = frictionCoefficients[surface] || 0.5;
-      const friction = force * coefficient;
-      const netForce = force - friction;
-      
-      measurements.friction = friction.toFixed(1);
-      measurements.coefficient = coefficient.toFixed(2);
-      measurements.netForce = netForce > 0 ? netForce.toFixed(1) : '0.0';
-    } else if (activeExperiment.id === 'exp-2') {
+    if (activeExperiment.id === 'exp-2') {
       // Pressure calculations
       const force = controlValues.force || 50;
       const area = controlValues.area || 10;
@@ -260,17 +315,8 @@ export default function ChapterView() {
     );
   }
 
-  // Show Activities view if selected
-  if (viewMode === 'activities') {
-    return (
-      <TextbookActivitiesView 
-        pdfFile={pdfFile}
-        currentPdfPage={currentPdfPage}
-        zoom={zoom}
-        onActivityPageChange={handleActivityPageChange}
-      />
-    );
-  }
+  // For chapter 1, show activities in middle pane instead of separate view
+  // Remove the separate activities view mode
 
   return (
     <div className="chapter-view">
@@ -292,40 +338,55 @@ export default function ChapterView() {
           </div>
         </div>
         <div className="chapter-controls">
-          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-            <Button 
-              variant={viewMode === 'pdf' ? 'primary' : 'ghost'}
-              size="sm"
-              onClick={() => setViewMode('pdf')}
-            >
-              <Book size={18} />
-              {language === 'en' ? 'Textbook' : 'పాఠ్యపుస్తకం'}
-            </Button>
-            <Button 
-              variant={viewMode === 'activities' ? 'primary' : 'ghost'}
-              size="sm"
-              onClick={() => setViewMode('activities')}
-            >
-              <FlaskConical size={18} />
-              {language === 'en' ? 'Activities' : 'కార్యకలాపాలు'}
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="sm"
-              onClick={() => setShowSupplemental(!showSupplemental)}
-            >
-              <Beaker size={20} />
-              {language === 'en' ? 'Experiments' : 'ప్రయోగాలు'} 
-              {materials?.experiments?.length > 0 && ` (${materials.experiments.length})`}
-            </Button>
-          </div>
+          <Button 
+            variant="ghost" 
+            size="sm"
+            onClick={() => setShowSupplemental(!showSupplemental)}
+          >
+            <Beaker size={20} />
+            {language === 'en' ? 'Supplemental Materials' : 'అనుబంధ పదార్థాలు'} 
+            {materials?.experiments?.length > 0 && ` (${materials.experiments.length})`}
+          </Button>
         </div>
       </div>
 
-      {/* Three-Pane Layout */}
-      <div className="three-pane-layout">
-        {/* LEFT PANE: PDF Viewer */}
-        <div className="pane pdf-pane">
+      {/* Tab Navigation */}
+      <div className="tab-navigation">
+        <button 
+          className={`tab-button ${activeTab === 'textbook' ? 'active' : ''}`}
+          onClick={() => setActiveTab('textbook')}
+        >
+          <Book size={18} />
+          {language === 'en' ? 'Textbook & Copilot' : 'పాఠ్యపుస్తకం & కోపైలట్'}
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'activities' ? 'active' : ''}`}
+          onClick={() => setActiveTab('activities')}
+        >
+          <FlaskConical size={18} />
+          {language === 'en' ? 'Activities' : 'కార్యకలాపాలు'}
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'qa' ? 'active' : ''}`}
+          onClick={() => setActiveTab('qa')}
+        >
+          {language === 'en' ? 'Q&A' : 'ప్రశ్నలు & జవాబులు'}
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'quiz' ? 'active' : ''}`}
+          onClick={() => setActiveTab('quiz')}
+        >
+          {language === 'en' ? 'Quiz' : 'క్విజ్'}
+        </button>
+      </div>
+
+      {/* Tab Content */}
+      <div className="tab-content">
+        {/* Tab 1: Textbook + Copilot (Two-Panel Layout) */}
+        {activeTab === 'textbook' && (
+          <div className="two-panel-layout">
+            {/* Left Panel: Textbook */}
+            <div className="pane pdf-pane">
           <Card className="pane-card">
             <div className="pane-header">
               <h2>
@@ -427,7 +488,6 @@ export default function ChapterView() {
                       renderTextLayer={true}
                       renderAnnotationLayer={true}
                       className="pdf-page"
-                      width={600}
                       loading={
                         <div className="pdf-loading">
                           <p style={{ fontSize: '0.875rem' }}>
@@ -468,17 +528,17 @@ export default function ChapterView() {
                   )}
                 </Document>
               )}
-              </div>
-
+            </div>
+            
               {/* Page Navigation */}
             <div className="pdf-navigation">
                 <Button 
-                variant="ghost" 
-                size="sm" 
+                  variant="ghost" 
+                  size="sm" 
                 onClick={prevPage}
                 disabled={currentPage === 1}
-              >
-                <ChevronLeft size={20} />
+                >
+                  <ChevronLeft size={20} />
                 </Button>
               
               <div className="page-info">
@@ -494,39 +554,128 @@ export default function ChapterView() {
                 <span className="total-pages">{totalLogicalPages}</span>
               </div>
 
-              <Button 
-                variant="ghost" 
-                size="sm" 
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
                 onClick={nextPage}
                 disabled={currentPage === totalLogicalPages}
-              >
-                <ChevronRight size={20} />
-              </Button>
+                >
+                  <ChevronRight size={20} />
+                </Button>
             </div>
           </Card>
         </div>
 
-        {/* CENTER PANE: Interactive Lab */}
-        <div className="pane simulation-pane">
+          {/* Raamu Copilot Panel - Below Textbook */}
+          <div className="pane chat-pane copilot-pane">
+            <Card className="pane-card">
+              <div className="pane-header">
+                <h2>
+                  <MessageSquare size={20} />
+                  {language === 'en' ? 'Ask Raamu' : 'రాముని అడగండి'}
+                </h2>
+              </div>
+              
+              <div className="chat-content">
+                <div className="context-info">
+                  <p>
+                    💡 {language === 'en' 
+                      ? `Currently on page ${currentPage}${activeExperiment ? ` - ${activeExperiment.title}` : ''}` 
+                      : `ప్రస్తుతం పేజీ ${currentPage}లో${activeExperiment ? ` - ${activeExperiment.titleTelugu}` : ''}`}
+                  </p>
+                </div>
+
+                <div className="suggested-questions">
+                  <h5>{language === 'en' ? 'Quick Questions:' : 'త్వరిత ప్రశ్నలు:'}</h5>
+                  <button className="question-chip">
+                    {language === 'en' ? 'What is force?' : 'బలం అంటే ఏమిటి?'}
+                  </button>
+                  <button className="question-chip">
+                    {language === 'en' ? 'Explain this experiment' : 'ఈ ప్రయోగాన్ని వివరించండి'}
+                  </button>
+                  <button className="question-chip">
+                    {language === 'en' ? 'Give me an example' : 'నాకు ఉదాహరణ ఇవ్వండి'}
+                  </button>
+                  <button className="question-chip">
+                    {language === 'en' ? 'What is the formula?' : 'సూత్రం ఏమిటి?'}
+                  </button>
+                </div>
+
+                <div className="chat-messages">
+                  <div className="message bot-message">
+                    <div className="message-avatar">R</div>
+                    <div className="message-content">
+                      <p>
+                        {language === 'en'
+                          ? `I'm here to help you understand ${chapterData.title}! I can see you're on page ${currentPage}. What would you like to know?`
+                          : `${chapterData.titleTelugu}ని అర్థం చేసుకోవడంలో మీకు సహాయం చేయడానికి నేను ఇక్కడ ఉన్నాను! మీరు పేజీ ${currentPage}లో ఉన్నారని నేను చూస్తున్నాను. మీరు ఏమి తెలుసుకోవాలనుకుంటున్నారు?`}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="chat-input-area">
+                  <input 
+                    type="text" 
+                    placeholder={language === 'en' ? 'Ask a question...' : 'ప్రశ్న అడగండి...'}
+                    className="input"
+                  />
+                  <Button size="sm">
+                    {language === 'en' ? 'Send' : 'పంపు'}
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          </div>
+          </div>
+        )}
+
+        {/* Tab 2: Activities (Full Width) */}
+        {activeTab === 'activities' && (
+          <div className="pane activities-pane">
           <Card className="pane-card">
+            {chapterNumber === 1 || chapterNumber === 2 ? (
+              // For Chapter 1, show textbook activities
+              <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             <div className="pane-header">
               <h2>
-                <Beaker size={20} />
-                {activeExperiment 
-                  ? (language === 'en' ? activeExperiment.title : activeExperiment.titleTelugu)
-                  : (language === 'en' ? 'Interactive Lab' : 'ఇంటరాక్టివ్ ప్రయోగశాల')
-                }
+                    <FlaskConical size={20} />
+                    {language === 'en' ? 'Interactive Activities' : 'ఇంటరాక్టివ్ కార్యకలాపాలు'}
               </h2>
-              {activeExperiment && (
-                <Badge variant="info">{activeExperiment.difficulty}</Badge>
-              )}
             </div>
-            
-            {materialsLoading ? (
-              <div className="loading-state">
-                <p>{language === 'en' ? 'Loading experiments...' : 'ప్రయోగాలు లోడ్ అవుతోంది...'}</p>
+                <div style={{ flex: 1, overflow: 'auto' }}>
+                  <TextbookActivitiesView 
+                    pdfFile={pdfFile}
+                    currentPdfPage={currentPdfPage}
+                    zoom={zoom}
+                    onActivityPageChange={handleActivityPageChange}
+                    showEmbeddedPDF={false}
+                    showAIChat={false}
+                    chapterNumber={chapterNumber}
+                  />
+                </div>
               </div>
-            ) : activeExperiment ? (
+            ) : (
+              // For other chapters, show experiments as before
+              <>
+                <div className="pane-header">
+                  <h2>
+                    <Beaker size={20} />
+                    {activeExperiment 
+                      ? (language === 'en' ? activeExperiment.title : activeExperiment.titleTelugu)
+                      : (language === 'en' ? 'Interactive Lab' : 'ఇంటరాక్టివ్ ప్రయోగశాల')
+                    }
+                  </h2>
+                  {activeExperiment && (
+                    <Badge variant="info">{activeExperiment.difficulty}</Badge>
+                  )}
+                </div>
+                
+                {materialsLoading ? (
+                  <div className="loading-state">
+                    <p>{language === 'en' ? 'Loading experiments...' : 'ప్రయోగాలు లోడ్ అవుతోంది...'}</p>
+                  </div>
+                ) : activeExperiment ? (
               <div className="experiment-content">
                 <div className="experiment-info">
                   <p className="description">
@@ -546,18 +695,6 @@ export default function ChapterView() {
                     <h3>{language === 'en' ? activeExperiment.title : activeExperiment.titleTelugu}</h3>
                     <p>3D Interactive Simulation</p>
                     <div className="simulation-preview">
-                      {activeExperiment.id === 'exp-1' && (
-                        <div className="friction-demo">
-                    <div className="demo-object">📦</div>
-                    <div className="demo-surface">
-                            <span>{controlValues.surface || 'Wood'} Surface</span>
-                    </div>
-                    <div className="force-arrow">→</div>
-                          <div className="force-label">
-                            Force: {controlValues.force || 50}N
-                    </div>
-                  </div>
-                )}
                       {activeExperiment.id === 'exp-2' && (
                         <div className="pressure-demo">
                     <div className="pressure-objects">
@@ -576,7 +713,7 @@ export default function ChapterView() {
                 )}
               </div>
                   </div>
-                </div>
+              </div>
 
                 {/* Controls */}
                 {activeExperiment.controls && activeExperiment.controls.length > 0 && (
@@ -638,79 +775,52 @@ export default function ChapterView() {
                         </span>
                     </div>
                     ))}
+                    </div>
+                )}
+                    </div>
+                ) : (
+                  <div className="empty-experiment">
+                    <div className="empty-icon">🧪</div>
+                    <p>{language === 'en' ? 'No experiments available. Click "Supplemental Materials" to view available labs.' : 'ప్రయోగాలు అందుబాటులో లేవు. అందుబాటులో ఉన్న ప్రయోగశాలలను వీక్షించడానికి "అనుబంధ పదార్థాలు" క్లిక్ చేయండి.'}</p>
                   </div>
                 )}
-                  </div>
-            ) : (
-              <div className="empty-experiment">
-                <div className="empty-icon">🧪</div>
-                <p>{language === 'en' ? 'No experiments available. Click "Experiments" to view available labs.' : 'ప్రయోగాలు అందుబాటులో లేవు. అందుబాటులో ఉన్న ప్రయోగశాలలను వీక్షించడానికి "ప్రయోగాలు" క్లిక్ చేయండి.'}</p>
-              </div>
+              </>
             )}
           </Card>
         </div>
+        )}
 
-        {/* RIGHT PANE: AI Tutor */}
-        <div className="pane chat-pane">
-          <Card className="pane-card">
-            <div className="pane-header">
-              <h2>
-                <MessageSquare size={20} />
-                {language === 'en' ? 'Ask Raamu' : 'రాముని అడగండి'}
-              </h2>
-            </div>
-            
-            <div className="chat-content">
-              <div className="context-info">
-                <p>
-                  💡 {language === 'en' 
-                    ? `Currently on page ${currentPage}${activeExperiment ? ` - ${activeExperiment.title}` : ''}` 
-                    : `ప్రస్తుతం పేజీ ${currentPage}లో${activeExperiment ? ` - ${activeExperiment.titleTelugu}` : ''}`}
-                </p>
-              </div>
-
-              <div className="suggested-questions">
-                <h5>{language === 'en' ? 'Quick Questions:' : 'త్వరిత ప్రశ్నలు:'}</h5>
-                <button className="question-chip">
-                  {language === 'en' ? 'What is force?' : 'బలం అంటే ఏమిటి?'}
-                </button>
-                <button className="question-chip">
-                  {language === 'en' ? 'Explain this experiment' : 'ఈ ప్రయోగాన్ని వివరించండి'}
-                </button>
-                <button className="question-chip">
-                  {language === 'en' ? 'Give me an example' : 'నాకు ఉదాహరణ ఇవ్వండి'}
-                </button>
-                <button className="question-chip">
-                  {language === 'en' ? 'What is the formula?' : 'సూత్రం ఏమిటి?'}
-                </button>
-              </div>
-
-              <div className="chat-messages">
-                <div className="message bot-message">
-                  <div className="message-avatar">R</div>
-                  <div className="message-content">
-                    <p>
-                      {language === 'en'
-                        ? `I'm here to help you understand ${chapterData.title}! I can see you're on page ${currentPage}. What would you like to know?`
-                        : `${chapterData.titleTelugu}ని అర్థం చేసుకోవడంలో మీకు సహాయం చేయడానికి నేను ఇక్కడ ఉన్నాను! మీరు పేజీ ${currentPage}లో ఉన్నారని నేను చూస్తున్నాను. మీరు ఏమి తెలుసుకోవాలనుకుంటున్నారు?`}
+        {/* Tab 3: Q&A (Full Width) */}
+        {activeTab === 'qa' && (
+              <div className="pane qa-pane">
+                <Card className="pane-card">
+                  <div className="pane-header">
+                    <h2>{language === 'en' ? 'Common Questions & Answers' : 'సాధారణ ప్రశ్నలు & జవాబులు'}</h2>
+                  </div>
+                  <div className="qa-content">
+                    <p style={{ padding: 'var(--space-4)', textAlign: 'center', color: 'var(--gray-600)' }}>
+                      {language === 'en' ? 'Q&A content coming soon...' : 'ప్రశ్నలు & జవాబులు కంటెంట్ త్వరలో వస్తుంది...'}
                     </p>
                   </div>
-                </div>
+                </Card>
               </div>
+            )}
 
-              <div className="chat-input-area">
-                <input 
-                  type="text" 
-                  placeholder={language === 'en' ? 'Ask a question...' : 'ప్రశ్న అడగండి...'}
-                  className="input"
-                />
-                <Button size="sm">
-                  {language === 'en' ? 'Send' : 'పంపు'}
-                </Button>
+        {/* Tab 4: Quiz (Full Width) */}
+        {activeTab === 'quiz' && (
+              <div className="pane quiz-pane">
+                <Card className="pane-card">
+                  <div className="pane-header">
+                    <h2>{language === 'en' ? 'Quiz' : 'క్విజ్'}</h2>
+                  </div>
+                  <div className="quiz-content">
+                    <p style={{ padding: 'var(--space-4)', textAlign: 'center', color: 'var(--gray-600)' }}>
+                      {language === 'en' ? 'Quiz content coming soon...' : 'క్విజ్ కంటెంట్ త్వరలో వస్తుంది...'}
+                    </p>
+                  </div>
+                </Card>
               </div>
-            </div>
-          </Card>
-        </div>
+            )}
       </div>
 
       {/* Supplemental Materials Sidebar */}

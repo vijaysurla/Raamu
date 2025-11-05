@@ -802,13 +802,38 @@
 .result-content {
   display: flex;
   flex-direction: column;
+  gap: var(--space-1);
+}
+
+.result-panel {
+  padding: var(--space-2) var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.result-panel h4 {
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-2);
+}
+
+.result-values {
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--space-2);
+  align-items: center;
+}
+
+.result-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
 }
 
 .result-explanation {
-  font-size: var(--text-sm);
-  line-height: var(--leading-relaxed);
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
   color: var(--gray-700);
+  margin-top: var(--space-1);
 }
 
 /* ==================== ACTIVITY 1.7: ELECTROSTATIC FORCE ==================== */

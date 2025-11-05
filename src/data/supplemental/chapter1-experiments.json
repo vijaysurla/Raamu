@@ -4,57 +4,6 @@
   "chapterTitleTelugu": "బలం – ఒత్తిడి",
   "experiments": [
     {
-      "id": "exp-1",
-      "title": "Friction Lab",
-      "titleTelugu": "ఘర్షణ ప్రయోగశాల",
-      "description": "Explore how different surfaces affect friction. Adjust the applied force and surface type to see how friction changes.",
-      "descriptionTelugu": "వివిధ ఉపరితలాలు ఘర్షణను ఎలా ప్రభావితం చేస్తాయో అన్వేషించండి. అనువర్తిత బలం మరియు ఉపరితల రకాన్ని సర్దుబాటు చేయండి.",
-      "difficulty": "beginner",
-      "estimatedTime": "10 minutes",
-      "relatedPages": [15, 16],
-      "type": "3d-simulation",
-      "controls": [
-        {
-          "id": "force",
-          "label": "Applied Force",
-          "labelTelugu": "అనువర్తిత బలం",
-          "type": "slider",
-          "min": 0,
-          "max": 100,
-          "default": 50,
-          "unit": "N"
-        },
-        {
-          "id": "surface",
-          "label": "Surface Type",
-          "labelTelugu": "ఉపరితల రకం",
-          "type": "select",
-          "options": ["Wood", "Ice", "Carpet", "Oil"],
-          "default": "Wood"
-        }
-      ],
-      "measurements": [
-        {
-          "id": "friction",
-          "label": "Friction Force",
-          "labelTelugu": "ఘర్షణ బలం",
-          "unit": "N"
-        },
-        {
-          "id": "coefficient",
-          "label": "Coefficient (μ)",
-          "labelTelugu": "గుణకం (μ)",
-          "unit": ""
-        },
-        {
-          "id": "netForce",
-          "label": "Net Force",
-          "labelTelugu": "నికర బలం",
-          "unit": "N"
-        }
-      ]
-    },
-    {
       "id": "exp-2",
       "title": "Pressure Demonstration",
       "titleTelugu": "ఒత్తిడి ప్రదర్శన",

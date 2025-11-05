@@ -8,7 +8,7 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
-// Import all activity components
+// Import Chapter 1 activity components
 import { 
   Activity_1_1, 
   Activity_1_2, 
@@ -29,9 +29,19 @@ import {
   Activity_1_11 
 } from './ActivityComponents_Part3';
 
+// Import Chapter 2 activity components
+import Activity_2_1 from './Chapter2_Activity_2_1';
+import Activity_2_2 from './Chapter2_Activity_2_2';
+import Activity_2_3 from './Chapter2_Activity_2_3';
+import Activity_2_4 from './Chapter2_Activity_2_4';
+import { FluidFrictionDemo } from './Chapter2_FluidFriction';
+import { FrictionApplications } from './Chapter2_FrictionApplications';
+import { Chapter2Summary } from './Chapter2_Summary';
+
 // Import styles
 import './TextbookActivitiesView.css';
 import './ActivityComponents.css';
+import './Chapter2Activities.css';
 
 // Textbook activities data
 const textbookActivities = [
@@ -158,11 +168,103 @@ const textbookActivities = [
   }
 ];
 
-export default function TextbookActivitiesView({ pdfFile, currentPdfPage, zoom, onActivityPageChange }) {
+export default function TextbookActivitiesView({ 
+  pdfFile, 
+  currentPdfPage, 
+  zoom, 
+  onActivityPageChange,
+  showEmbeddedPDF = true,
+  showAIChat = true,
+  chapterNumber = 1 // Support multiple chapters
+}) {
   const { language } = useLanguage();
   
+  // Chapter 2 activities data
+  const chapter2Activities = [
+    {
+      id: 'activity-2.1',
+      number: '2.1',
+      title: 'Force of Friction - Book Push Demo',
+      titleTelugu: 'ఘర్షణ బలం - పుస్తకం నెట్టడం ప్రదర్శన',
+      page: 1,
+      pdfPages: [1, 2],
+      component: Activity_2_1,
+      type: 'friction-basics',
+      difficulty: 'easy'
+    },
+    {
+      id: 'activity-2.2',
+      number: '2.2',
+      title: 'Factors Affecting Friction - Spring Balance',
+      titleTelugu: 'ఘర్షణను ప్రభావితం చేసే కారకాలు - స్ప్రింగ్ బ్యాలెన్స్',
+      page: 3,
+      pdfPages: [3, 4],
+      component: Activity_2_2,
+      type: 'friction-measurement',
+      difficulty: 'medium'
+    },
+    {
+      id: 'activity-2.3',
+      number: '2.3',
+      title: 'Inclined Plane - Surface Friction',
+      titleTelugu: 'వంపు తలం - ఉపరితల ఘర్షణ',
+      page: 3,
+      pdfPages: [3, 4, 5],
+      component: Activity_2_3,
+      type: 'friction-comparison',
+      difficulty: 'medium'
+    },
+    {
+      id: 'activity-2.4',
+      number: '2.4',
+      title: 'Rolling vs Sliding Friction',
+      titleTelugu: 'తిరగడం vs జారడం ఘర్షణ',
+      page: 13,
+      pdfPages: [13, 14],
+      component: Activity_2_4,
+      type: 'rolling-friction',
+      difficulty: 'easy'
+    },
+    {
+      id: 'fluid-friction',
+      number: '2.5',
+      title: 'Fluid Friction & Aerodynamics',
+      titleTelugu: 'ద్రవ ఘర్షణ & ఏరోడైనమిక్స్',
+      page: 15,
+      pdfPages: [15, 16],
+      component: FluidFrictionDemo,
+      type: 'fluid-friction',
+      difficulty: 'medium'
+    },
+    {
+      id: 'friction-applications',
+      number: '2.6',
+      title: 'Friction Applications',
+      titleTelugu: 'ఘర్షణ అనువర్తనాలు',
+      page: 11,
+      pdfPages: [11, 12],
+      component: FrictionApplications,
+      type: 'friction-applications',
+      difficulty: 'easy'
+    },
+    {
+      id: 'chapter2-summary',
+      number: '2.7',
+      title: 'Chapter Summary & Quiz',
+      titleTelugu: 'అధ్యాయం సారాంశం & క్విజ్',
+      page: 17,
+      pdfPages: [17, 18],
+      component: Chapter2Summary,
+      type: 'assessment',
+      difficulty: 'medium'
+    }
+  ];
+  
+  // Get activities based on chapter number
+  const activities = chapterNumber === 2 ? chapter2Activities : textbookActivities;
+  
   // State management
-  const [activeActivity, setActiveActivity] = useState(textbookActivities[0]);
+  const [activeActivity, setActiveActivity] = useState(activities[0]);
   const [completedActivities, setCompletedActivities] = useState([]);
   const [showSidebar, setShowSidebar] = useState(false);
 
@@ -183,14 +285,20 @@ export default function TextbookActivitiesView({ pdfFile, currentPdfPage, zoom, 
   // Progress calculation
   const progress = {
     completed: completedActivities.length,
-    total: textbookActivities.length,
-    percentage: Math.round((completedActivities.length / textbookActivities.length) * 100)
+    total: activities.length,
+    percentage: Math.round((completedActivities.length / activities.length) * 100)
   };
 
-  // Filter activities by type
-  const forceActivities = textbookActivities.filter(a => a.type === 'force');
-  const nonContactActivities = textbookActivities.filter(a => a.type === 'non-contact');
-  const pressureActivities = textbookActivities.filter(a => a.type === 'pressure');
+  // Filter activities by type (Chapter 1)
+  const forceActivities = chapterNumber === 1 ? textbookActivities.filter(a => a.type === 'force') : [];
+  const nonContactActivities = chapterNumber === 1 ? textbookActivities.filter(a => a.type === 'non-contact') : [];
+  const pressureActivities = chapterNumber === 1 ? textbookActivities.filter(a => a.type === 'pressure') : [];
+  
+  // Filter activities by type (Chapter 2)
+  const frictionBasics = chapterNumber === 2 ? activities.filter(a => a.type === 'friction-basics') : [];
+  const frictionMeasurement = chapterNumber === 2 ? activities.filter(a => a.type === 'friction-measurement' || a.type === 'friction-comparison') : [];
+  const frictionAdvanced = chapterNumber === 2 ? activities.filter(a => a.type === 'fluid-friction' || a.type === 'friction-applications') : [];
+  const frictionAssessment = chapterNumber === 2 ? activities.filter(a => a.type === 'assessment') : [];
 
   // Handle activity selection
   const handleActivitySelect = (activity) => {
@@ -224,116 +332,162 @@ export default function TextbookActivitiesView({ pdfFile, currentPdfPage, zoom, 
   };
 
   return (
-    <div className="textbook-activities-view">
-      {/* Header */}
-      <div className="chapter-header">
-        <div className="chapter-info">
-          <Badge variant="primary">Class 8 Physics</Badge>
-          <h1>
-            {language === 'en' 
-              ? 'Chapter 1: Force and Pressure'
-              : 'అధ్యాయం 1: బలం మరియు పీడనం'}
-          </h1>
-          
-          <div className="progress-indicator">
-            <div className="progress-bar">
-              <div 
-                className="progress-fill" 
-                style={{ width: `${progress.percentage}%` }}
-              />
+    <div className={`textbook-activities-view ${!showEmbeddedPDF && !showAIChat ? 'embedded-mode' : ''}`}>
+      {/* Header - only show if not embedded in ChapterView */}
+      {showEmbeddedPDF && showAIChat && (
+        <div className="chapter-header">
+          <div className="chapter-info">
+            <Badge variant="primary">Class 8 Physics</Badge>
+            <h1>
+              {language === 'en' 
+                ? chapterNumber === 2 
+                  ? 'Chapter 2: Friction'
+                  : 'Chapter 1: Force and Pressure'
+                : chapterNumber === 2
+                  ? 'అధ్యాయం 2: ఘర్షణ'
+                  : 'అధ్యాయం 1: బలం మరియు పీడనం'}
+            </h1>
+            
+            <div className="progress-indicator">
+              <div className="progress-bar">
+                <div 
+                  className="progress-fill" 
+                  style={{ width: `${progress.percentage}%` }}
+                />
+              </div>
+              <span className="progress-text">
+                {progress.completed}/{progress.total} {language === 'en' ? 'Activities Completed' : 'కార్యకలాపాలు పూర్తయ్యాయి'}
+              </span>
             </div>
-            <span className="progress-text">
-              {progress.completed}/{progress.total} {language === 'en' ? 'Activities Completed' : 'కార్యకలాపాలు పూర్తయ్యాయి'}
-            </span>
+          </div>
+
+          <div className="header-actions">
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => setShowSidebar(!showSidebar)}
+            >
+                    <Beaker size={20} />
+              {language === 'en' ? 'All Activities' : 'అన్ని కార్యకలాపాలు'} ({activities.length})
+            </Button>
           </div>
         </div>
+      )}
 
-        <div className="header-actions">
-          <Button 
-            variant="ghost" 
-            size="sm"
-            onClick={() => setShowSidebar(!showSidebar)}
-          >
-            <Beaker size={20} />
-            {language === 'en' ? 'All Activities' : 'అన్ని కార్యకలాపాలు'} ({textbookActivities.length})
-          </Button>
-        </div>
-      </div>
+      {/* Layout: Show PDF and AI Chat only if enabled */}
+      <div className={showEmbeddedPDF && showAIChat ? "three-pane-layout" : "single-pane-layout"}>
+        {/* LEFT PANE: PDF Viewer (only if showEmbeddedPDF is true) */}
+        {showEmbeddedPDF && (
+          <div className="pane pdf-pane">
+            <Card className="pane-card">
+              <div className="pane-header">
+                <h2>
+                  <Book size={20} />
+                  {language === 'en' ? 'Textbook' : 'పాఠ్యపుస్తకం'}
+                </h2>
+                <Badge variant="secondary">
+                  {language === 'en' ? 'Page' : 'పేజీ'} {activeActivity.page}
+                </Badge>
+              </div>
+              <div className="pdf-viewer">
+                {pdfFile && (
+                  <Document
+                    file={pdfFile}
+                    options={documentOptions}
+                    loading={
+                      <div style={{ padding: '2rem', textAlign: 'center' }}>
+                        <p>{language === 'en' ? 'Loading PDF...' : 'PDF లోడ్ అవుతోంది...'}</p>
+                      </div>
+                    }
+                    error={
+                      <div style={{ padding: '2rem', textAlign: 'center' }}>
+                        <p>{language === 'en' ? 'Failed to load PDF' : 'PDF లోడ్ చేయడంలో విఫలమైంది'}</p>
+                      </div>
+                    }
+                  >
+                    {getActivityPdfPage() > 0 && (
+                      <Page
+                        pageNumber={getActivityPdfPage()}
+                        scale={zoom / 100}
+                        renderTextLayer={true}
+                        renderAnnotationLayer={true}
+                        width={400}
+                        className="pdf-page"
+                      />
+                    )}
+                  </Document>
+                )}
+              </div>
+            </Card>
+          </div>
+        )}
 
-      {/* Three-Pane Layout */}
-      <div className="three-pane-layout">
-        {/* LEFT PANE: PDF Viewer */}
-        <div className="pane pdf-pane">
-          <Card className="pane-card">
-            <div className="pane-header">
-              <h2>
-                <Book size={20} />
-                {language === 'en' ? 'Textbook' : 'పాఠ్యపుస్తకం'}
-              </h2>
-              <Badge variant="secondary">
-                {language === 'en' ? 'Page' : 'పేజీ'} {activeActivity.page}
-              </Badge>
-            </div>
-            <div className="pdf-viewer">
-              {pdfFile && (
-                <Document
-                  file={pdfFile}
-                  options={documentOptions}
-                  loading={
-                    <div style={{ padding: '2rem', textAlign: 'center' }}>
-                      <p>{language === 'en' ? 'Loading PDF...' : 'PDF లోడ్ అవుతోంది...'}</p>
-                    </div>
-                  }
-                  error={
-                    <div style={{ padding: '2rem', textAlign: 'center' }}>
-                      <p>{language === 'en' ? 'Failed to load PDF' : 'PDF లోడ్ చేయడంలో విఫలమైంది'}</p>
-                    </div>
-                  }
-                >
-                  {getActivityPdfPage() > 0 && (
-                    <Page
-                      pageNumber={getActivityPdfPage()}
-                      scale={zoom / 100}
-                      renderTextLayer={true}
-                      renderAnnotationLayer={true}
-                      width={400}
-                      className="pdf-page"
-                    />
-                  )}
-                </Document>
-              )}
-            </div>
-          </Card>
-        </div>
-
-        {/* CENTER PANE: Interactive Activity */}
+        {/* Activity Pane */}
         <div className="pane activity-pane">
           <Card className="pane-card">
-            <div className="pane-header">
-              <div>
-                <h2>
-                  <Beaker size={20} />
-                  {language === 'en' ? `Activity ${activeActivity.number}` : `కార్యకలాపం ${activeActivity.number}`}
-                </h2>
-                <p className="activity-subtitle">
-                  {language === 'en' ? activeActivity.title : activeActivity.titleTelugu}
-                </p>
+            {/* Show header when in standalone mode (three-pane) */}
+            {showEmbeddedPDF && showAIChat && (
+              <div className="pane-header">
+                <div>
+                  <h2>
+                    <Beaker size={20} />
+                    {language === 'en' ? `Activity ${activeActivity.number}` : `కార్యకలాపం ${activeActivity.number}`}
+                  </h2>
+                  <p className="activity-subtitle">
+                    {language === 'en' ? activeActivity.title : activeActivity.titleTelugu}
+                  </p>
+                </div>
+                {!completedActivities.includes(activeActivity.id) && (
+                  <Button
+                    size="sm"
+                    variant="success"
+                    onClick={() => markComplete(activeActivity.id)}
+                  >
+                    ✓ {language === 'en' ? 'Mark Complete' : 'పూర్తయ్యిందిగా గుర్తించండి'}
+                  </Button>
+                )}
+                {completedActivities.includes(activeActivity.id) && (
+                  <Badge variant="success" size="lg">
+                    ✓ {language === 'en' ? 'Completed' : 'పూర్తయింది'}
+                  </Badge>
+                )}
               </div>
-              {!completedActivities.includes(activeActivity.id) && (
-                <Button
-                  size="sm"
-                  variant="success"
-                  onClick={() => markComplete(activeActivity.id)}
-                >
-                  ✓ {language === 'en' ? 'Mark Complete' : 'పూర్తయ్యిందిగా గుర్తించండి'}
-                </Button>
-              )}
-              {completedActivities.includes(activeActivity.id) && (
-                <Badge variant="success" size="lg">
-                  ✓ {language === 'en' ? 'Completed' : 'పూర్తయింది'}
-                </Badge>
-              )}
-            </div>
+            )}
+
+            {/* Embedded mode: Show simplified header */}
+            {!showEmbeddedPDF && !showAIChat && (
+              <div className="embedded-activity-header">
+                <div className="activity-selector">
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => setShowSidebar(!showSidebar)}
+                    style={{ marginBottom: '0.5rem' }}
+                  >
+                    <Beaker size={18} />
+                    {language === 'en' ? 'All Activities' : 'అన్ని కార్యకలాపాలు'} ({activities.length})
+                  </Button>
+                  <div className="activity-title">
+                    <h3>{language === 'en' ? `Activity ${activeActivity.number}` : `కార్యకలాపం ${activeActivity.number}`}</h3>
+                    <p>{language === 'en' ? activeActivity.title : activeActivity.titleTelugu}</p>
+                  </div>
+                </div>
+                {!completedActivities.includes(activeActivity.id) && (
+                  <Button
+                    size="sm"
+                    variant="success"
+                    onClick={() => markComplete(activeActivity.id)}
+                  >
+                    ✓ {language === 'en' ? 'Mark Complete' : 'పూర్తయ్యిందిగా గుర్తించండి'}
+                  </Button>
+                )}
+                {completedActivities.includes(activeActivity.id) && (
+                  <Badge variant="success" size="lg">
+                    ✓ {language === 'en' ? 'Completed' : 'పూర్తయింది'}
+                  </Badge>
+                )}
+              </div>
+            )}
 
             <div className="activity-content">
               {/* Render the actual activity component */}
@@ -342,11 +496,12 @@ export default function TextbookActivitiesView({ pdfFile, currentPdfPage, zoom, 
           </Card>
         </div>
 
-        {/* RIGHT PANE: AI Tutor */}
-        <div className="pane chat-pane">
-          <Card className="pane-card">
-            <div className="pane-header">
-              <h2>
+        {/* RIGHT PANE: AI Tutor (only if showAIChat is true) */}
+        {showAIChat && (
+          <div className="pane chat-pane">
+            <Card className="pane-card">
+              <div className="pane-header">
+                <h2>
                 <span>🤖</span>
                 {language === 'en' ? 'Ask Raamu' : 'రాముని అడగండి'}
               </h2>
@@ -402,6 +557,7 @@ export default function TextbookActivitiesView({ pdfFile, currentPdfPage, zoom, 
             </div>
           </Card>
         </div>
+        )}
       </div>
 
       {/* Activities Sidebar */}
@@ -415,83 +571,219 @@ export default function TextbookActivitiesView({ pdfFile, currentPdfPage, zoom, 
           </div>
 
           <div className="activities-list">
-            {/* Force Activities */}
-            <div className="activity-category">
-              <h4 className="category-title">
-                💪 {language === 'en' ? 'Force Activities (1.1 - 1.5)' : 'బల కార్యకలాపాలు (1.1 - 1.5)'}
-              </h4>
-              {forceActivities.map((activity) => (
-                <button
-                  key={activity.id}
-                  className={`activity-item ${activeActivity.id === activity.id ? 'active' : ''} ${completedActivities.includes(activity.id) ? 'completed' : ''}`}
-                  onClick={() => handleActivitySelect(activity)}
-                >
-                  <div className="activity-number">
-                    {completedActivities.includes(activity.id) ? '✓' : activity.number}
-                  </div>
-                  <div className="activity-details">
-                    <div className="activity-title">
-                      {language === 'en' ? activity.title : activity.titleTelugu}
-                    </div>
-                    <div className="activity-meta">
-                      📖 {language === 'en' ? 'Page' : 'పేజీ'} {activity.page}
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
+            {chapterNumber === 1 ? (
+              <>
+                {/* Force Activities */}
+                <div className="activity-category">
+                  <h4 className="category-title">
+                    💪 {language === 'en' ? 'Force Activities (1.1 - 1.5)' : 'బల కార్యకలాపాలు (1.1 - 1.5)'}
+                  </h4>
+                  {forceActivities.map((activity) => (
+                    <button
+                      key={activity.id}
+                      className={`activity-item ${activeActivity.id === activity.id ? 'active' : ''} ${completedActivities.includes(activity.id) ? 'completed' : ''}`}
+                      onClick={() => handleActivitySelect(activity)}
+                    >
+                      <div className="activity-number">
+                        {completedActivities.includes(activity.id) ? '✓' : activity.number}
+                      </div>
+                      <div className="activity-details">
+                        <div className="activity-title">
+                          {language === 'en' ? activity.title : activity.titleTelugu}
+                        </div>
+                        <div className="activity-meta">
+                          📖 {language === 'en' ? 'Page' : 'పేజీ'} {activity.page}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
 
-            {/* Non-Contact Force Activities */}
-            <div className="activity-category">
-              <h4 className="category-title">
-                🧲 {language === 'en' ? 'Non-Contact Forces (1.6 - 1.7)' : 'సంపర్క రహిత బలాలు (1.6 - 1.7)'}
-              </h4>
-              {nonContactActivities.map((activity) => (
-                <button
-                  key={activity.id}
-                  className={`activity-item ${activeActivity.id === activity.id ? 'active' : ''} ${completedActivities.includes(activity.id) ? 'completed' : ''}`}
-                  onClick={() => handleActivitySelect(activity)}
-                >
-                  <div className="activity-number">
-                    {completedActivities.includes(activity.id) ? '✓' : activity.number}
-                  </div>
-                  <div className="activity-details">
-                    <div className="activity-title">
-                      {language === 'en' ? activity.title : activity.titleTelugu}
-                    </div>
-                    <div className="activity-meta">
-                      📖 {language === 'en' ? 'Page' : 'పేజీ'} {activity.page}
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
+                {/* Non-Contact Force Activities */}
+                <div className="activity-category">
+                  <h4 className="category-title">
+                    🧲 {language === 'en' ? 'Non-Contact Forces (1.6 - 1.7)' : 'సంపర్క రహిత బలాలు (1.6 - 1.7)'}
+                  </h4>
+                  {nonContactActivities.map((activity) => (
+                    <button
+                      key={activity.id}
+                      className={`activity-item ${activeActivity.id === activity.id ? 'active' : ''} ${completedActivities.includes(activity.id) ? 'completed' : ''}`}
+                      onClick={() => handleActivitySelect(activity)}
+                    >
+                      <div className="activity-number">
+                        {completedActivities.includes(activity.id) ? '✓' : activity.number}
+                      </div>
+                      <div className="activity-details">
+                        <div className="activity-title">
+                          {language === 'en' ? activity.title : activity.titleTelugu}
+                        </div>
+                        <div className="activity-meta">
+                          📖 {language === 'en' ? 'Page' : 'పేజీ'} {activity.page}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
 
-            {/* Pressure Activities */}
-            <div className="activity-category">
-              <h4 className="category-title">
-                💧 {language === 'en' ? 'Pressure Activities (1.8 - 1.11)' : 'పీడన కార్యకలాపాలు (1.8 - 1.11)'}
-              </h4>
-              {pressureActivities.map((activity) => (
-                <button
-                  key={activity.id}
-                  className={`activity-item ${activeActivity.id === activity.id ? 'active' : ''} ${completedActivities.includes(activity.id) ? 'completed' : ''}`}
-                  onClick={() => handleActivitySelect(activity)}
-                >
-                  <div className="activity-number">
-                    {completedActivities.includes(activity.id) ? '✓' : activity.number}
-                  </div>
-                  <div className="activity-details">
-                    <div className="activity-title">
-                      {language === 'en' ? activity.title : activity.titleTelugu}
-                    </div>
-                    <div className="activity-meta">
-                      📖 {language === 'en' ? 'Page' : 'పేజీ'} {activity.page}
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
+                {/* Pressure Activities */}
+                <div className="activity-category">
+                  <h4 className="category-title">
+                    💧 {language === 'en' ? 'Pressure Activities (1.8 - 1.11)' : 'పీడన కార్యకలాపాలు (1.8 - 1.11)'}
+                  </h4>
+                  {pressureActivities.map((activity) => (
+                    <button
+                      key={activity.id}
+                      className={`activity-item ${activeActivity.id === activity.id ? 'active' : ''} ${completedActivities.includes(activity.id) ? 'completed' : ''}`}
+                      onClick={() => handleActivitySelect(activity)}
+                    >
+                      <div className="activity-number">
+                        {completedActivities.includes(activity.id) ? '✓' : activity.number}
+                      </div>
+                      <div className="activity-details">
+                        <div className="activity-title">
+                          {language === 'en' ? activity.title : activity.titleTelugu}
+                        </div>
+                        <div className="activity-meta">
+                          📖 {language === 'en' ? 'Page' : 'పేజీ'} {activity.page}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <>
+                {/* Friction Basics */}
+                <div className="activity-category">
+                  <h4 className="category-title">
+                    📚 {language === 'en' ? 'Friction Basics (2.1)' : 'ఘర్షణ ప్రాథమికాలు (2.1)'}
+                  </h4>
+                  {frictionBasics.map((activity) => (
+                    <button
+                      key={activity.id}
+                      className={`activity-item ${activeActivity.id === activity.id ? 'active' : ''} ${completedActivities.includes(activity.id) ? 'completed' : ''}`}
+                      onClick={() => handleActivitySelect(activity)}
+                    >
+                      <div className="activity-number">
+                        {completedActivities.includes(activity.id) ? '✓' : activity.number}
+                      </div>
+                      <div className="activity-details">
+                        <div className="activity-title">
+                          {language === 'en' ? activity.title : activity.titleTelugu}
+                        </div>
+                        <div className="activity-meta">
+                          📖 {language === 'en' ? 'Page' : 'పేజీ'} {activity.page}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+
+                {/* Friction Measurement & Comparison */}
+                <div className="activity-category">
+                  <h4 className="category-title">
+                    📏 {language === 'en' ? 'Friction Measurement (2.2 - 2.3)' : 'ఘర్షణ కొలత (2.2 - 2.3)'}
+                  </h4>
+                  {frictionMeasurement.map((activity) => (
+                    <button
+                      key={activity.id}
+                      className={`activity-item ${activeActivity.id === activity.id ? 'active' : ''} ${completedActivities.includes(activity.id) ? 'completed' : ''}`}
+                      onClick={() => handleActivitySelect(activity)}
+                    >
+                      <div className="activity-number">
+                        {completedActivities.includes(activity.id) ? '✓' : activity.number}
+                      </div>
+                      <div className="activity-details">
+                        <div className="activity-title">
+                          {language === 'en' ? activity.title : activity.titleTelugu}
+                        </div>
+                        <div className="activity-meta">
+                          📖 {language === 'en' ? 'Page' : 'పేజీ'} {activity.page}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+
+                {/* Rolling Friction */}
+                <div className="activity-category">
+                  <h4 className="category-title">
+                    ⚙️ {language === 'en' ? 'Rolling Friction (2.4)' : 'తిరగడం ఘర్షణ (2.4)'}
+                  </h4>
+                  {activities.filter(a => a.type === 'rolling-friction').map((activity) => (
+                    <button
+                      key={activity.id}
+                      className={`activity-item ${activeActivity.id === activity.id ? 'active' : ''} ${completedActivities.includes(activity.id) ? 'completed' : ''}`}
+                      onClick={() => handleActivitySelect(activity)}
+                    >
+                      <div className="activity-number">
+                        {completedActivities.includes(activity.id) ? '✓' : activity.number}
+                      </div>
+                      <div className="activity-details">
+                        <div className="activity-title">
+                          {language === 'en' ? activity.title : activity.titleTelugu}
+                        </div>
+                        <div className="activity-meta">
+                          📖 {language === 'en' ? 'Page' : 'పేజీ'} {activity.page}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+
+                {/* Advanced Concepts */}
+                <div className="activity-category">
+                  <h4 className="category-title">
+                    💡 {language === 'en' ? 'Advanced Concepts (2.5 - 2.6)' : 'అధునాతన భావనలు (2.5 - 2.6)'}
+                  </h4>
+                  {frictionAdvanced.map((activity) => (
+                    <button
+                      key={activity.id}
+                      className={`activity-item ${activeActivity.id === activity.id ? 'active' : ''} ${completedActivities.includes(activity.id) ? 'completed' : ''}`}
+                      onClick={() => handleActivitySelect(activity)}
+                    >
+                      <div className="activity-number">
+                        {completedActivities.includes(activity.id) ? '✓' : activity.number}
+                      </div>
+                      <div className="activity-details">
+                        <div className="activity-title">
+                          {language === 'en' ? activity.title : activity.titleTelugu}
+                        </div>
+                        <div className="activity-meta">
+                          📖 {language === 'en' ? 'Page' : 'పేజీ'} {activity.page}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+
+                {/* Assessment */}
+                <div className="activity-category">
+                  <h4 className="category-title">
+                    🎯 {language === 'en' ? 'Assessment (2.7)' : 'అంచనా (2.7)'}
+                  </h4>
+                  {frictionAssessment.map((activity) => (
+                    <button
+                      key={activity.id}
+                      className={`activity-item ${activeActivity.id === activity.id ? 'active' : ''} ${completedActivities.includes(activity.id) ? 'completed' : ''}`}
+                      onClick={() => handleActivitySelect(activity)}
+                    >
+                      <div className="activity-number">
+                        {completedActivities.includes(activity.id) ? '✓' : activity.number}
+                      </div>
+                      <div className="activity-details">
+                        <div className="activity-title">
+                          {language === 'en' ? activity.title : activity.titleTelugu}
+                        </div>
+                        <div className="activity-meta">
+                          📖 {language === 'en' ? 'Page' : 'పేజీ'} {activity.page}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
